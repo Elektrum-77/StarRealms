@@ -98,7 +98,8 @@ public class SimpleGameController {
 		// Nouveau point pour la location de la souris
 		Point2D.Float location;
 
-		while (true) { // boucle de la partie
+		while (true)
+		{ // boucle de la partie
 			Event event = context.pollOrWaitEvent(10); // modifier pour avoir un affichage fluide
 			if (event == null) { // no event
 				continue;
@@ -128,9 +129,9 @@ public class SimpleGameController {
 				location = event.getLocation();
 				view.setCoordo((int)location.x,(int)location.y);
 				
-				if(view.isEndOfTurn((int)location.x,(int)location.y)) {
-					posPlayerInQueue+=1; // on passe le tour donc pos du joueur + 1
-					gameBoard.endOfTurn(posPlayerInQueue); // m�me si la valeur envoy�e est grande elle est trait�e avec un modulo
+				if(view.isEndOfTurn((int)location.x,(int)location.y))
+				{
+					gameBoard.endOfTurn(gameBoard.getIndexOfPlayingPlayer()); // m�me si la valeur envoy�e est grande elle est trait�e avec un modulo
 					view.draw(context, gameBoard);
 				}
 				

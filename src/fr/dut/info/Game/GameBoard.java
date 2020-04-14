@@ -105,7 +105,7 @@ public class GameBoard {
 		addCardToTradeDeck(card,1);
 	}
 	
-	// Ajouter des cartes à tous les joueurs
+	// Ajouter des cartes ï¿½ tous les joueurs
 	public void addCardToAllPlayersDeck(Card card, int n) {
 		for(Player player: players) {
 				player.getDeck().firstAddCard(this,card,n);
@@ -117,22 +117,35 @@ public class GameBoard {
 		///// dois provoquer une erreur si aucun joueur n'est en train de jouer
 		return playingPlayer;
 	}
+
+	// Renvoi le joueur du tour actuel
+	public int getIndexOfPlayingPlayer() {
+		for (int i = 0; i < players.size(); i++)
+		{
+			if (players[i].equals(getPlayingPlayer())) 
+			{
+				return i;
+			}
+		}
+		throw new Exception("heu ..., je sais pas ce qui vient de ce passer mais bruh");
+	}
 	
-	// Désigner aléatoirement un joueur parmis ceux présent (sa position dans la liste)
+	// Dï¿½signer alï¿½atoirement un joueur parmis ceux prï¿½sent (sa position dans la liste)
 	public int randomPlayer() { 
 		Random random = new Random();
 		int pos = random.nextInt(players.size());
 		return pos;
 	}
 	
-	// Désigne le nouveau joueur du tour
-	public void setThePlayer(int n) {	
-		int x = n % players.size();
-		try {
-			playingPlayer = players.get(x);
-		}catch(IndexOutOfBoundsException e) {
-			System.out.println("The indicated position exceeds (or is less than 0) the size of the player list.");
+	// Dï¿½signe le nouveau joueur du tour
+	public void setThePlayer(int n)
+	{
+		if ( n < 0 || n > players.size())
+		{
+			throw new IllegalArgumentException("faut que sa soit entre 0 et player.size()");
 		}
+
+		playingPlayer = players.get(x);
 	}
 	
 	// Chaque joueur Pioche n cartes de son deck
@@ -142,7 +155,7 @@ public class GameBoard {
 		}
 	}
 	
-	// Chaque joueur sauf le joueur entrée en paramètre tire n cartes de leur deck
+	// Chaque joueur sauf le joueur entrï¿½e en paramï¿½tre tire n cartes de leur deck
 	public void everybodyDrawCardsExcept(Player player, int n) {
 		for(Player p: players) {
 			if(!(p.equals(player))) {
@@ -176,7 +189,7 @@ public class GameBoard {
 		tradeDeck.removeCard(tradeDeck.getCard(0).getId());
 	}
 	
-	// Mélange chaque deck des joueurs
+	// Mï¿½lange chaque deck des joueurs
 	public void shuffleAllPlayersDeck() {
 		for(Player player: players) {
 			player.shuffleDeck();
@@ -192,7 +205,7 @@ public class GameBoard {
 	public void addCardToScrapHeap(Card card) {
 		scrapHeap.addCard(card);
 	}
-	// Tas de feraille -> deck d'achat | tas de feraille vidé
+	// Tas de feraille -> deck d'achat | tas de feraille vidï¿½
 	public void scrapHeapGoesTradeDeck() {
 		if(!(scrapHeap.isEmpty())) {
 			tradeDeck=scrapHeap;
@@ -205,7 +218,7 @@ public class GameBoard {
 		return playingPlayer+" |Trade : "+ tradePool+ " |Combat :"+combatPool+"\n_________________________________________";
 	}
 	
-	// Met à jour les pts de combat du tour courant
+	// Met ï¿½ jour les pts de combat du tour courant
 	public void updateCombatPool(int i) {
 		combatPool+=i;
 	}
