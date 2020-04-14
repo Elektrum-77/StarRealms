@@ -108,10 +108,9 @@ public class SimpleGameController {
 			Action action = event.getAction();
 			if (action == Action.KEY_PRESSED) {
 				
-				if(event.getKey().toString() == "SPACE") {
-					posPlayerInQueue+=1; // on passe le tour donc pos du joueur + 1
-					// m�me si la valeur envoy�e est grande elle est trait�e avec un modulo
-					gameBoard.setThePlayer(posPlayerInQueue); 
+				if(event.getKey().toString() == "SPACE")
+				{
+					gameBoard.setThePlayer((gameBoard.getIndexOfPlayingPlayer() + 1) % gameBoard.getPlayersLength()); 
 					view.setCoordo(0,0);
 					
 				}else if(event.getKey().toString() == "Q") {
@@ -131,7 +130,7 @@ public class SimpleGameController {
 				
 				if(view.isEndOfTurn((int)location.x,(int)location.y))
 				{
-					gameBoard.endOfTurn(gameBoard.getIndexOfPlayingPlayer()); // m�me si la valeur envoy�e est grande elle est trait�e avec un modulo
+					gameBoard.endOfTurn((gameBoard.getIndexOfPlayingPlayer() + 1) % gameBoard.getPlayersLength()); // m�me si la valeur envoy�e est grande elle est trait�e avec un modulo
 					view.draw(context, gameBoard);
 				}
 				

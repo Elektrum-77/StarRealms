@@ -33,6 +33,10 @@ public class GameBoard {
 		cardIdAi = 0;
 	}
 	
+	public int getPlayersLength() 
+	{
+		return players.size();
+	}
 	
 	public int getTradePool() {
 		return tradePool;
