@@ -13,6 +13,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 
@@ -56,7 +58,7 @@ public class SimpleGameView implements GameView {
 	 * @param length defin a length
 	 * @param background the background of the scene
 	 */
-	public SimpleGameView(int xOrigin, int yOrigin, int width, int length, Image background) {
+	public SimpleGameView(int xOrigin, int yOrigin, int width, int length) {
 		this.xOrigin = xOrigin;
 		this.yOrigin = yOrigin;
 		this.width = width;
@@ -64,13 +66,31 @@ public class SimpleGameView implements GameView {
 		coordo=new Coordinates(0,0);
 		visibleObjects = new ArrayList<>();
 		miniMenu = new ArrayList<>();
-		this.background=background;
+		this.background=randomBg();
 		coordoMiniMenu = new Coordinates(0,0);
 		coordoPointerUp = new Coordinates(0,0);
 		selectedObject = selectedDefault;
 	}
 	
-	
+	private Image randomBg() {
+		// Background Aléatoire
+					HashSet<String> pathListBg = new HashSet<>();
+					ArrayList<Image> bgList = new ArrayList<>();
+					pathListBg.add("img/background/bg.jpg");
+					pathListBg.add("img/background/bg2.jpg");
+					pathListBg.add("img/background/bg4.jpg");
+					pathListBg.add("img/background/bg6.jpg");
+					pathListBg.add("img/background/bg7.jpg");
+					pathListBg.add("img/background/bg8.jpg");
+					pathListBg.add("img/background/bg9.jpg");
+					for(String path: pathListBg) {
+						bgList.add(new ImageIcon(SimpleGameController.class.getClassLoader().getResource(path)).getImage());
+					}
+					Random random = new Random();
+					int i = random.nextInt(bgList.size());
+					// Nouveau background defini aléatoirement
+					return bgList.get(i);
+	}
 	
 	/**
 	 * @return the current selected object in the board
@@ -209,51 +229,51 @@ public class SimpleGameView implements GameView {
 		graphics.drawString("Illegal change of turn : space", width-200, 150);
 		graphics.drawString("Illegal Combat/Trade pool : UP", width-200, 200);
 		
+		// Dessine les cartes en jeu des joueurs
+		x = width/6; y = (length/5-20) + 30;
+		drawInPlayCards(graphics, gameBoard.getPlayers().get(0), x, y);
+		y = (length-(length/5-20)-20)-(length/8)-20;                //(length/2)+120; 
+		drawInPlayCards(graphics, gameBoard.getPlayers().get(1), x, y);
+		
 		// Dessine les deck de joueur
-		x = 540; y = 20; w = 110; l = 180;
+		x = width/3-70; y = 20; w = width/14-20; l = length/5-20; // 110 180
 		drawPlayerDeck(graphics, gameBoard,gameBoard.getPlayers().get(0), x, y, w, l);
-		y = 885;
+		y = length-l-20;
 		drawPlayerDeck(graphics, gameBoard,gameBoard.getPlayers().get(1), x, y, w, l);
 		
-		// Dessine les cartes en jeu des joueurs
-		x = 540; y = 240; w = 90; l = 150;
-		drawInPlayCards(graphics, gameBoard.getPlayers().get(0), x, y, w, l);
-		y = 690; w = 90; l = 150;
-		drawInPlayCards(graphics, gameBoard.getPlayers().get(1), x, y, w, l);
-		
 		// Dessine les points des joueurs
-		x -= 250; y = 20 ; w = 80; l = 80;
+		w = width/20; x -= (length/5-20)+w; y = 20 ;  l = w; //80 80
 		Player player = gameBoard.getPlayers().get(0);
 		drawPlayerPoints(graphics, player, x,  y,  w,  l);
-		y = 885;
+		y = length-(length/5-20)-20;
 		player = gameBoard.getPlayers().get(1);
 		drawPlayerPoints(graphics, player, x,  y,  w,  l);
-				
+	
 		// Dessine les cartes de la main des joueurs
-		x = 680; y= 20; w = 140; l = 210;
+		x = ((width/3)-70)+(width/14-20)+10 ; y= 20; w = width/16; l = length/6; // 140 210
 		drawHand(graphics, gameBoard,gameBoard.getPlayers().get(0), x, y, w, l);
-		y= 860; w = 140; l = 210;
+		y= length-l-20;
 		drawHand(graphics, gameBoard,gameBoard.getPlayers().get(1), x, y, w, l);
 		
 		
 		// Afficher la pile de deck du jeu (TradeDeck)
-		x = 80; y = 450; w = 140; l = 220;
+		x = 80; y = (length/2)-70; w = width/14; l = length/5;
 		drawTradeDeck(graphics, gameBoard, x, y, w, l);
 
 		// Dessine la ligne d'achat
-		x+= 170; y = 450; w = 140; l = 220;
+		x+= (width/14) + 12; //140 220
 		drawTradeRow(graphics, gameBoard, x, y, w, l);
 	
 		// Dessine la pile d'Explorers
-		x = 1470; y = 450; w = 140; l = 220;
+		x = (width-2*(length/5)-5); y += 10;//x = 1470; y = 450; w = 140; l = 220;
 		drawExplorers(graphics, gameBoard, x, y, w, l);
 		
 		// Dessine les points du tour
-		x= width-240; y = length/2-100; w = 220; l = 105;
+		w = l; x= width-w-5; y = length/2-70;  l = length/10;
 		drawPoolPoints(graphics,  gameBoard,  x,  y,  w,  l);
 		
 		// Créer un bouton pour terminer son tour
-		y+=120;
+		y+=l+10;
 		createEndTurnButton( graphics, gameBoard, x, y, w, l);
 		
 		
@@ -293,8 +313,6 @@ public class SimpleGameView implements GameView {
 		coordoMiniMenu = new Coordinates(0,0);
 		coordoPointerUp = new Coordinates(0,0);
 		miniMenu.clear();
-		
-		
 	}
 	
 	
@@ -305,7 +323,7 @@ public class SimpleGameView implements GameView {
 		drawCardStroke(graphics, x, y, w, l, Color.BLACK);
 		
 		graphics.setFont(new Font("Arial", Font.BOLD, 40));
-		graphics.drawString("End turn", x + 28, y +63);
+		graphics.drawString("End turn", x + 7, y +63);
 		visibleObjects.add(new ClickableObject("End turn",x,y,x+w,y+l));
 	}
 	
@@ -316,27 +334,26 @@ public class SimpleGameView implements GameView {
 		graphics.fill(new Rectangle2D.Float(x, y, w, l));
 		drawCardStroke(graphics, x, y, w, l, Color.BLACK);
 		
+		String str = gameBoard.getTradePool()+"";
+		graphics.setFont(new Font("Arial", Font.BOLD, w/(3*1+(str.length()/2)) ));
 		
-		graphics.setFont(new Font("Arial", Font.BOLD, 50));
-		
-		x += 23; y+=12;
+		x += 3; y+=3;
 		// Trade
 		graphics.setColor(new Color(245, 225, 10));
-		Shape trade = new Ellipse2D.Float(x, y, 80, 80);
+		Shape trade = new Ellipse2D.Float(x, y, l-5, l-5);
 		graphics.fill(trade);
 		graphics.setColor(Color.BLACK);
-		graphics.drawString(gameBoard.getTradePool()+"", x + 25, y +60);
+		graphics.drawString(str, x + 5, y +60);
 		
-		x += 90;
+		x += l;
 		// Combat
 		graphics.setColor(new Color(227, 41, 16));
-		Shape comba = new Ellipse2D.Float(x, y, 80, 80);
+		Shape comba = new Ellipse2D.Float(x, y, l-5, l-5);
 		graphics.fill(comba);
-		graphics.draw(new Rectangle2D.Float(x-5, y+(l/2)-12, 90, 2));
-		graphics.draw(new Rectangle2D.Float(x+40, y-5, 2, 90));
+		//graphics.draw(new Rectangle2D.Float(x-5, y+(l/2)-7, 90, 2));
+		//graphics.draw(new Rectangle2D.Float(x+37, y-5, 2, 90));
 		graphics.setColor(Color.BLACK);
-		graphics.drawString(gameBoard.getCombatPool()+"", x + 25, y +60);
-		
+		graphics.drawString(gameBoard.getCombatPool()+"", x + 1, y +60);
 	}
 	
 	
@@ -350,8 +367,6 @@ public class SimpleGameView implements GameView {
 		graphics.setColor(Color.BLACK);
 		graphics.setFont(new Font("Arial", Font.BOLD, 50));
 		graphics.drawString(player.getAuthority()+"", x + 12,y +60);
-		
-		
 	}
 	
 	
@@ -373,7 +388,7 @@ public class SimpleGameView implements GameView {
 			graphics.fill(new Rectangle2D.Float(x, yi, w, l));
 			drawCardStroke(graphics, x, yi, w, l, new Color(159, 173, 196));
 		}
-		x = xi - 150;
+		x = xi - l + 20;
 		if(!player.getDiscard().isEmpty()) {
 			Deck discardDeck = player.getDiscard();
 			for(int k = 0; k < discardDeck.getSize(); k++) {
@@ -393,7 +408,7 @@ public class SimpleGameView implements GameView {
 	private void drawHand(Graphics2D graphics, GameBoard gameBoard, Player player, int x, int y, int w, int l) {
 		int wf = w; int lf = l;
 		int yf = y; 
-		int marginRightI = 150;
+		int marginRightI = w + 10; //
 		int marginRight = (player.equals(gameBoard.getPlayingPlayer())) ? 150: 20;
 		// Les cartes du joueur qui ne joue pas sont regroupées entre elles (changement de marge droite)
 		// Main du joueur
@@ -401,7 +416,7 @@ public class SimpleGameView implements GameView {
 		for(int i = 0; i < hand.getSize(); i++) {
 			if(player.equals(gameBoard.getPlayingPlayer())) {
 				if(hand.getCard(i).cardType()=="Base") {
-					y= yf + 30; w = lf; l = wf; marginRight= marginRightI+80;
+					y= yf + 30; w = lf; l = wf; marginRight= marginRightI + 70;
 				}else{
 					y= yf; w = wf; l = lf; marginRight = marginRightI;
 				}
@@ -420,19 +435,22 @@ public class SimpleGameView implements GameView {
 	}
 	
 	
-	public void drawInPlayCards(Graphics2D graphics, Player player, int x, int y, int w, int l) {
+	public void drawInPlayCards(Graphics2D graphics, Player player, int x, int y) {
+		Deck inPlayCards = player.getInPlayCards();
+		int w = width/21 ; int l = length/8; // w = width/14; l = length/5;
 		int wf = w; int lf = l;
 		int yf = y; 
 		// Les cartes du joueur qui ne joue pas sont regroupées entre elles (changement de marge droite)
-		int marginRight = 100;
+		int marginRightI = w + 10; //
+		int marginRight;
 		// Main du joueur
-		Deck inPlayCards = player.getInPlayCards();
+		
 		for(int i = 0; i < inPlayCards.getSize(); i++) {
-			marginRight = 101;
+			
 			if(inPlayCards.getCard(i).cardType()=="Base") {
-				y= yf + 30; w = lf; l = wf; marginRight+= 59;
+				y= yf + 30; w = lf; l = wf; marginRight = marginRightI + 40;
 			}else{
-				y= yf; w = wf; l = lf;
+				y= yf; w = wf; l = lf; marginRight = marginRightI;
 			}
 			graphics.drawImage(inPlayCards.getCard(i).getImage(), x,y, w, l,null);
 			// Ajout de la carte aux objects visibles/cliquables
@@ -484,7 +502,7 @@ public class SimpleGameView implements GameView {
 		int yi = y;
 		int wi = w;
 		int li = l;
-		int marginRightI = 160;
+		int marginRightI = width/13; //160
 		int marginRight;
 
 		if(!gameBoard.getTradeRow().isEmpty()) {
@@ -503,9 +521,7 @@ public class SimpleGameView implements GameView {
 				visibleObjects.add(new ClickableObject(x,y,x+w,y+l,tradeRow.getCard(i),i));
 				x+=marginRight;
 			}
-		}else {
-			graphics.setColor(Color.WHITE);
-			graphics.drawString("RAAH Y'AAA RIENN DANS LE DECK", (width / 2)-550 , length / 2);
+		
 		}
 	}
 	
@@ -587,8 +603,10 @@ public class SimpleGameView implements GameView {
 					strListLabel.add("Buy");
 					
 				}else if(gameBoard.getPlayingPlayer().getInPlayCards().isCardIdIn(card.getId())) { // Si la carte lui fait partie de ses cartes en jeu
+					if(card.getPrimary().exists()) {strList.add("Primary");strListLabel.add("Primary");}
 					if(card.getAlly().exists() && gameBoard.getPlayingPlayer().isPossibleAlly(card)) { strList.add("Ally"); strListLabel.add("Ally"); }
 					if(card.getScrap().exists()) { strList.add("Scrap"); strListLabel.add("Scrap"); }
+					
 				}else if (!gameBoard.cardIsInTradeRow(card.getId())){// la carte n'est pas dans ses cartes en jeu ni dans la ligne d'achat
 					if(card.cardType()=="Base") {
 						if(gameBoard.getCombatPool() >= card.getDefense()) {
@@ -677,9 +695,14 @@ public class SimpleGameView implements GameView {
 				card.getPrimary().useAllSpecialActions(gameBoard, gameBoard.getPlayingPlayer());
 				card.getPrimary().use(gameBoard);
 				clean();
+			}else if (label == "Primary") {
+				card = object.getLinkedCard();
+				card.usePrimary(gameBoard);
+				
+				
 			}else if(label == "Ally") {
 				card = object.getLinkedCard();
-				card.getAlly().use(gameBoard);
+				card.useAlly(gameBoard);
 				return true;
 				
 			}else if(label == "Attack 1") { // On attaque avec un point de combat
@@ -697,7 +720,7 @@ public class SimpleGameView implements GameView {
 				
 			}else if(label == "Scrap") {
 				card = object.getLinkedCard();
-				card.getScrap().use(gameBoard);
+				card.useScrap(gameBoard);
 				
 				// on réactive les capacités de la carte avant de la jeter
 				card.getPrimary().setEnable(); 

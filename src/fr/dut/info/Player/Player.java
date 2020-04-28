@@ -129,6 +129,7 @@ public class Player {
 		inPlayCards.clean();
 		for(Card card: bases) {
 			card.getAlly().setEnable();
+			card.getPrimary().setEnable();
 			inPlayCards.addCard(card);
 			
 		}

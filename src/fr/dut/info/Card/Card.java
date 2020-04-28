@@ -12,7 +12,6 @@ public interface Card {
 	String getName();
 	String getFaction();
 	int getCost();
-	String getDescription();
 	int getDefense();
 	boolean getOutpost();
 	Ability getPrimary();

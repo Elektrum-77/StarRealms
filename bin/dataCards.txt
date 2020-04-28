@@ -1,0 +1,15 @@
+<Explorer, 10>
+<Scout, 8>
+<Viper, 2>
+<Battle Blob, 3>
+<Blob Wheel, 3>
+<Ram, 2>
+<Trade Pod, 3>
+<Corvette, 2>
+<Dreadnaught, 1>
+<Space Station, 2>
+<War World, 1>
+<Cutter, 3>
+<Embassy Yacht, 2>
+<Flagship, 1>
+<Federation Shuttle, 3>
