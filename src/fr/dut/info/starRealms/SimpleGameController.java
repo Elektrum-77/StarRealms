@@ -166,7 +166,9 @@ public class SimpleGameController {
 			while(sc.hasNextLine()) {
 				String[] line = sc.nextLine().split("<|, |>");
 				
-				numberByCard.put(line[1], Integer.parseInt(line[2]));
+				if(!line[0].equals("###")) {
+					numberByCard.put(line[1], Integer.parseInt(line[2]));
+				}
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -180,22 +182,25 @@ public class SimpleGameController {
 			Ability s;
 			while(sc.hasNextLine()) {
 				String[] tab = sc.nextLine().split("<|; |>");
-				if(!tab[1].equals("b")) { // traitement vaisseaux
-					/*1 path *2 nom *3 faction *4 sous-factions *5 cout *6 primary *7 action spé primary *8 ally *9 actions spé ally *10 scrap *11 actions spé scrap * 
-					*/
-					p = createAbilitWithSpeAct(tab[6], tab[7]);
-					a = createAbilitWithSpeAct(tab[8], tab[9]);
-					s = createAbilitWithSpeAct(tab[10], tab[11]);
-					allCards.put(tab[1], new Ship("-1", new ImageIcon(SimpleGameController.class.getClassLoader().getResource(tab[1])).getImage(),tab[2], tab[3],Integer.parseInt(tab[5]),p,a,s));
-					
-				}else { // traitement bases
-					/*1 marqueur d'objet "base" *2 path *3 nom *4 faction *5 sous-factions *6 cout *7 defence *8 boolean outpost *9 primary *10 action spé primary *11 ally *12 actions spé ally *13 scrap *14 actions spé scrap * */
-					p = createAbilitWithSpeAct(tab[9], tab[10]);
-					a = createAbilitWithSpeAct(tab[11], tab[12]);
-					s = createAbilitWithSpeAct(tab[13], tab[14]);
-					Base b = new Base("-1", new ImageIcon(SimpleGameController.class.getClassLoader().getResource(tab[2])).getImage(),tab[3], tab[4],Integer.parseInt(tab[6]), Integer.parseInt(tab[7]), Boolean.parseBoolean(tab[8]),p,a,s);
-					allCards.put(tab[3], b);
+				if(!tab[0].equals("###")) {
+					if(!tab[1].equals("b")) { // traitement vaisseaux
+						/*1 path *2 nom *3 faction *4 sous-factions *5 cout *6 primary *7 action spé primary *8 ally *9 actions spé ally *10 scrap *11 actions spé scrap * 
+						*/
+						p = createAbilitWithSpeAct(tab[6], tab[7]);
+						a = createAbilitWithSpeAct(tab[8], tab[9]);
+						s = createAbilitWithSpeAct(tab[10], tab[11]);
+						allCards.put(tab[1], new Ship("-1", new ImageIcon(SimpleGameController.class.getClassLoader().getResource(tab[1])).getImage(),tab[2], tab[3],Integer.parseInt(tab[5]),p,a,s));
+						
+					}else { // traitement bases
+						/*1 marqueur d'objet "base" *2 path *3 nom *4 faction *5 sous-factions *6 cout *7 defence *8 boolean outpost *9 primary *10 action spé primary *11 ally *12 actions spé ally *13 scrap *14 actions spé scrap * */
+						p = createAbilitWithSpeAct(tab[9], tab[10]);
+						a = createAbilitWithSpeAct(tab[11], tab[12]);
+						s = createAbilitWithSpeAct(tab[13], tab[14]);
+						Base b = new Base("-1", new ImageIcon(SimpleGameController.class.getClassLoader().getResource(tab[2])).getImage(),tab[3], tab[4],Integer.parseInt(tab[6]), Integer.parseInt(tab[7]), Boolean.parseBoolean(tab[8]),p,a,s);
+						allCards.put(tab[3], b);
+					}
 				}
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -207,7 +212,6 @@ public class SimpleGameController {
 			if(name.equals("Scout") || name.equals("Viper")) {
 				gameBoard.addCardToAllPlayersDeck(c, v);
 			}else if(name.equals("Explorer")) {
-				System.out.println(name+ " nb "+numberByCard.get(name) );
 				gameBoard.initialiseExplorers(c, v);
 			}else {
 				gameBoard.addCardToTradeDeck(c, v);
@@ -231,7 +235,6 @@ public class SimpleGameController {
 				}
 			}
 		}
-		
 		return ab;
 	}
 }

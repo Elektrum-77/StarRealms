@@ -1,14 +1,21 @@
+###< Core Set
+###< UNALIGNED
+###< EXPLORER
 <Explorer, 10>
+###< Carte debut main joueurs
 <Scout, 8>
 <Viper, 2>
+###< BLOB
 <Battle Blob, 3>
 <Blob Wheel, 3>
 <Ram, 2>
 <Trade Pod, 3>
+###< STAR EMPIRE
 <Corvette, 2>
 <Dreadnaught, 1>
 <Space Station, 2>
 <War World, 1>
+###< TRADE FEDERATION
 <Cutter, 3>
 <Embassy Yacht, 2>
 <Flagship, 1>
