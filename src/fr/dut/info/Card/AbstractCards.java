@@ -73,6 +73,12 @@ abstract class AbstractCards implements Card{
 		scrap.setEnable();
 	}
 	
+	public void disableAllAbilitys() {
+		primary.disable();
+		ally.disable();
+		scrap.disable();
+	}
+	
 	public void usePrimary(GameBoard gameBoard) {
 		primary.use(gameBoard);
 	}

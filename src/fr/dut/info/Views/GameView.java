@@ -1,4 +1,4 @@
-package fr.dut.info.starRealms;
+package fr.dut.info.Views;
 
 import java.awt.Graphics2D;
 import fr.dut.info.Game.GameBoard;

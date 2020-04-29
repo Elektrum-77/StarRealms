@@ -50,6 +50,12 @@ public class Player {
 			deck.addCard(card, n);
 	}
 	
+	// Ajouter n cartes au deck du joueur
+	public void addCardToTopOfDeck(Card card, int n) {
+			deck.addCardTopOfDeck(card, n);
+	}
+	
+	
 	// Renvoie la main du joueur
 	public Deck getHand() {
 		return hand;

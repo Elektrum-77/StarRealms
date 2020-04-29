@@ -18,6 +18,7 @@ import fr.dut.info.Card.Ship;
 import fr.dut.info.Game.GameBoard;
 import fr.dut.info.Player.Player;
 import fr.dut.info.SpecialAction.*;
+import fr.dut.info.Views.SimpleGameView;
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event;
@@ -146,21 +147,16 @@ public class SimpleGameController {
 				}
 				
 			}
-			
-			
-			
 		}
 	}
 
-	
-	
 	public static GameBoard concreteCards(GameBoard gameBoard) {
 		// Ajout de joueurs
 		gameBoard.addPlayer(new Player("Joueur 1"));
 		gameBoard.addPlayer(new Player("Joueur 2"));
 		
 		// Enregistre le nombres pour chaque carte
-		Path rules = Path.of("./res/dataCards.txt");
+		Path rules = Path.of("./res/initCards.txt");
 		HashMap<String, Integer> numberByCard = new HashMap<>();
 		try(InputStream in = Files.newInputStream(rules); Scanner sc = new Scanner(in);){
 			while(sc.hasNextLine()) {
@@ -174,7 +170,7 @@ public class SimpleGameController {
 			e1.printStackTrace();
 		}
 		// Création des cartes:
-		Path initCards = Path.of("./res/initCards.txt");
+		Path initCards = Path.of("./res/dataCards.txt");
 		HashMap<String, Card> allCards = new HashMap<>();
 		try(InputStream in = Files.newInputStream(initCards);  Scanner sc = new Scanner(in);){
 			Ability p;
@@ -182,25 +178,27 @@ public class SimpleGameController {
 			Ability s;
 			while(sc.hasNextLine()) {
 				String[] tab = sc.nextLine().split("<|; |>");
+				for(String st: tab) {
+					System.out.print(st+";");
+				}System.out.println("\n");
 				if(!tab[0].equals("###")) {
 					if(!tab[1].equals("b")) { // traitement vaisseaux
-						/*1 path *2 nom *3 faction *4 sous-factions *5 cout *6 primary *7 action spé primary *8 ally *9 actions spé ally *10 scrap *11 actions spé scrap * 
+						/*1 path *2 nom *3 faction *4 cout *5 primary *6 action spé primary *7 ally *8 actions spé ally *9 scrap *10 actions spé scrap * 
 						*/
-						p = createAbilitWithSpeAct(tab[6], tab[7]);
-						a = createAbilitWithSpeAct(tab[8], tab[9]);
-						s = createAbilitWithSpeAct(tab[10], tab[11]);
-						allCards.put(tab[1], new Ship("-1", new ImageIcon(SimpleGameController.class.getClassLoader().getResource(tab[1])).getImage(),tab[2], tab[3],Integer.parseInt(tab[5]),p,a,s));
+						p = createAbilitWithSpeAct(tab[5], tab[6]);
+						a = createAbilitWithSpeAct(tab[7], tab[8]);
+						s = createAbilitWithSpeAct(tab[9], tab[10]);
+						allCards.put(tab[1], new Ship("-1", new ImageIcon(SimpleGameController.class.getClassLoader().getResource(tab[1])).getImage(),tab[2], tab[3],Integer.parseInt(tab[4]),p,a,s));
 						
 					}else { // traitement bases
-						/*1 marqueur d'objet "base" *2 path *3 nom *4 faction *5 sous-factions *6 cout *7 defence *8 boolean outpost *9 primary *10 action spé primary *11 ally *12 actions spé ally *13 scrap *14 actions spé scrap * */
-						p = createAbilitWithSpeAct(tab[9], tab[10]);
-						a = createAbilitWithSpeAct(tab[11], tab[12]);
-						s = createAbilitWithSpeAct(tab[13], tab[14]);
-						Base b = new Base("-1", new ImageIcon(SimpleGameController.class.getClassLoader().getResource(tab[2])).getImage(),tab[3], tab[4],Integer.parseInt(tab[6]), Integer.parseInt(tab[7]), Boolean.parseBoolean(tab[8]),p,a,s);
+						/*1 marqueur d'objet "base" *2 path *3 nom *4 faction *5 cout *6 defence *7 boolean outpost *8 primary *9 action spé primary *10 ally *11 actions spé ally *12 scrap *13 actions spé scrap * */
+						p = createAbilitWithSpeAct(tab[8], tab[9]);
+						a = createAbilitWithSpeAct(tab[10], tab[11]);
+						s = createAbilitWithSpeAct(tab[12], tab[13]);
+						Base b = new Base("-1", new ImageIcon(SimpleGameController.class.getClassLoader().getResource(tab[2])).getImage(),tab[3], tab[4],Integer.parseInt(tab[5]), Integer.parseInt(tab[6]), Boolean.parseBoolean(tab[7]),p,a,s);
 						allCards.put(tab[3], b);
 					}
 				}
-				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -216,7 +214,6 @@ public class SimpleGameController {
 			}else {
 				gameBoard.addCardToTradeDeck(c, v);
 			}
-			
 		}
 		return gameBoard;
 	}
@@ -226,6 +223,9 @@ public class SimpleGameController {
 		String[] acts = actions.split(",");
 		HashMap<String, SpecialAction> allSpecialActions = new HashMap<>();
 		allSpecialActions.put("SpeActEmbassyYacht", new SpeActEmbassyYacht());
+		allSpecialActions.put("SpeActBattlePod", new SpeActBattlePod());
+		allSpecialActions.put("SpeActBlobCarrier", new SpeActBlobCarrier());
+		
 		String[] v = values.split(",");
 		Ability ab = new Ability(Integer.parseInt(v[0]), Integer.parseInt(v[1]), Integer.parseInt(v[2]), Integer.parseInt(v[3]));
 		if(actions!="/") {

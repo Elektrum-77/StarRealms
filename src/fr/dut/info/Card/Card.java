@@ -17,7 +17,8 @@ public interface Card {
 	Ability getPrimary();
 	Ability getAlly();
 	Ability getScrap();
-	
+	void disableAllAbilitys();
+	void resetAbilitys();
 	abstract String cardType();
 	
 	void usePrimary(GameBoard gameBoard);

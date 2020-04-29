@@ -1,4 +1,4 @@
-package fr.dut.info.starRealms;
+package fr.dut.info.Views;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -13,7 +13,9 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -22,6 +24,9 @@ import fr.dut.info.Card.Card;
 import fr.dut.info.Game.GameBoard;
 import fr.dut.info.Player.Deck;
 import fr.dut.info.Player.Player;
+import fr.dut.info.starRealms.ClickableObject;
+import fr.dut.info.starRealms.Coordinates;
+import fr.dut.info.starRealms.SimpleGameController;
 
 /**
  * @author Windows
@@ -588,67 +593,64 @@ public class SimpleGameView implements GameView {
 		Card card = null;
 		Player player = null;
 		graphics.setFont(new Font("Franklin Gothic", Font.PLAIN, 20));
+		
 		if(!selectedDefault.equals(selectedObject)) {
-			ArrayList<String> strList = new ArrayList<>();
-			ArrayList<String> strListLabel = new ArrayList<>();// Faudrait faire un enum dans la classe ClickableObject pour les labels
+			HashMap<String, String> list = new HashMap<>();
 			// ceci est très TRES moche, mais bon.. vois pas comment faire
 			if(selectedObject.getCard()!=null) { // Est une carte 
 				card = selectedObject.getCard();
 				
 				if(gameBoard.cardIsInAHand(card.getId())) { // Si la carte est dans la main
-					if(card.getPrimary().exists()) { strList.add("Play");strListLabel.add("Play");}
+					if(card.getPrimary().exists()) { list.put("Play", "Play");}
 					
-				}else if(gameBoard.cardIsInTradeRow(card.getId()) && gameBoard.getTradePool() >= card.getCost()) { // Si la carte est dans la liste d'achat
-					strList.add("Buy for "+card.getCost());
-					strListLabel.add("Buy");
+				}else if(gameBoard.cardIsInTradeRow(card.getId())) { // Si la carte est dans la liste d'achat
+					if(gameBoard.getTradePool() >= card.getCost()) {list.put("Buy for "+card.getCost(),"Buy");}
+					if(gameBoard.getScrapTradeRowPool()>=1) { list.put("Scrap", "Scrap"); }
+					if(gameBoard.getFreeShipPool()>=1 && card.cardType()=="Ship") {list.put("Get for free", "Get for free"); }
 					
 				}else if(gameBoard.getPlayingPlayer().getInPlayCards().isCardIdIn(card.getId())) { // Si la carte lui fait partie de ses cartes en jeu
-					if(card.getPrimary().exists()) {strList.add("Primary");strListLabel.add("Primary");}
-					if(card.getAlly().exists() && gameBoard.getPlayingPlayer().isPossibleAlly(card)) { strList.add("Ally"); strListLabel.add("Ally"); }
-					if(card.getScrap().exists()) { strList.add("Scrap"); strListLabel.add("Scrap"); }
+					if(card.getPrimary().exists()) {list.put("Primary", "Primary");}
+					if(card.getAlly().exists() && gameBoard.getPlayingPlayer().isPossibleAlly(card)) {list.put("Ally", "Ally"); }
+					if(card.getScrap().exists()) {list.put("Scrap", "Scrap"); }
 					
 				}else if (!gameBoard.cardIsInTradeRow(card.getId())){// la carte n'est pas dans ses cartes en jeu ni dans la ligne d'achat
 					if(card.cardType()=="Base") {
 						if(gameBoard.getCombatPool() >= card.getDefense()) {
-							strList.add("Destroy");
-							strListLabel.add("Destroy");
+							list.put("Destroy", "Destroy");
 						}
 					}
 				}
 				
-				strList.add("See");
-				strListLabel.add("See");
+				list.put("See", "See");
 			}else if(selectedObject.getDeck()!=null) { // Est un deck
 				
 				deck = selectedObject.getDeck();
 				// si c'est le deck explorers et que trade pool > prix de la carte
-				if(deck.getName()=="Explorers" && gameBoard.getTradePool() >= deck.getCard(0).getCost()) {strList.add("Buy"); strListLabel.add("Buy");}
+				if(deck.getName()=="Explorers" && gameBoard.getTradePool() >= deck.getCard(0).getCost()) {list.put("Buy", "Buy"); }
 				
 			// si le joueur lié à l'icone de joueur n'est pas le joueur qui effectue son tour
 			}else if(selectedObject.getLinkedPlayer()!=null && !(selectedObject.getLinkedPlayer().equals(gameBoard.getPlayingPlayer()))) { 
 				player = selectedObject.getLinkedPlayer();
 				// Si le joueur dont l'icone et selectionnée ne possède pas de base "outPost" et que le combat pool est > 0
 				if(player.hasNoOutPostBase() && gameBoard.getCombatPool() > 0 ) {
-					strList.add("Attack 1");
-					strListLabel.add("Attack 1");
-					strList.add("Attack all");
-					strListLabel.add("Attack all");
+					list.put("Attack 1", "Attack 1");
+					list.put("Attack all", "Attack all");
 				}
 			}
 			int w = 140;
 			int l = 50;
-			for(int i = 0; i < strList.size(); i++) {
+			for(Entry<String, String> str: list.entrySet()) {
 				graphics.setColor(Color.DARK_GRAY);
 				graphics.fill(new Rectangle2D.Float((float)x,(float)y,(float)w,(float)l));
 				if(card!=null) {
-					miniMenu.add(new ClickableObject(strListLabel.get(i), x,y,x+w,y+l, card));
+					miniMenu.add(new ClickableObject(str.getValue(), x,y,x+w,y+l, card));
 				}else if(player!=null) {
-					miniMenu.add(new ClickableObject(strListLabel.get(i), x,y,x+w,y+l, player));
+					miniMenu.add(new ClickableObject(str.getValue(), x,y,x+w,y+l, player));
 				}else {
-					miniMenu.add(new ClickableObject(strListLabel.get(i), x,y,x+w,y+l, deck));
+					miniMenu.add(new ClickableObject(str.getValue(), x,y,x+w,y+l, deck));
 				}
 				graphics.setColor(new Color(208, 221, 242));
-				graphics.drawString(strList.get(i).toString(), x+5,y+30);
+				graphics.drawString(str.getKey(), x+5,y+30);
 				drawCardStroke(graphics, x, y, w, l, new Color(114, 125, 143));
 				y+=50;
 			}
@@ -720,14 +722,21 @@ public class SimpleGameView implements GameView {
 				
 			}else if(label == "Scrap") {
 				card = object.getLinkedCard();
-				card.useScrap(gameBoard);
+				if(gameBoard.cardIsInTradeRow(card.getId())) {
+					card.disableAllAbilitys();
+					// on réactive les capacités de la carte avant de la jeter
+					card.resetAbilitys();
+					gameBoard.getScarpHeap().addCard(card);
+					gameBoard.getTradeRow().removeCard(card.getId());
+					gameBoard.updateScrapTradeRowPool(-1);
+				}else {
+					card.useScrap(gameBoard);
+					// on réactive les capacités de la carte avant de la jeter
+					card.resetAbilitys();
+					gameBoard.getScarpHeap().addCard(card);
+					gameBoard.getPlayingPlayer().getInPlayCards().removeCard(card.getId());
+				}
 				
-				// on réactive les capacités de la carte avant de la jeter
-				card.getPrimary().setEnable(); 
-				card.getAlly().setEnable();
-				card.getScrap().setEnable();
-				gameBoard.getScarpHeap().addCard(card);
-				gameBoard.getPlayingPlayer().getInPlayCards().removeCard(card.getId());
 				return true;
 			}else if(label == "Destroy") {
 				card = object.getLinkedCard();
@@ -741,11 +750,15 @@ public class SimpleGameView implements GameView {
 					}
 				}
 			return true;
+			} else if(label == "Get for free") {
+				card = object.getLinkedCard();
+				gameBoard.getPlayingPlayer().addCardToTopOfDeck(object.getLinkedCard(), 1);
+				gameBoard.getTradeRow().removeCard(object.getLinkedCard().getId());
+				gameBoard.updateFreeShipPool(-1);
 			}
 		}
 		return false;
 	}
-	
 	
 	// Utile !
 	@SuppressWarnings("unused")
@@ -759,7 +772,6 @@ public class SimpleGameView implements GameView {
 		}
 	}
 	
-	
 	// Bleute le sous menu quand la souris passe dessus
 	public void pimpSubMenu(Graphics2D graphics) {
 		if(selectedSubMenu!=null) {
@@ -772,7 +784,6 @@ public class SimpleGameView implements GameView {
 			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1));
 		}
 	}
-	
 	
 	// Obsolete ?? à verif si utilisé ou non
 	// Détruit un objet (le conteneur) Cliquable de la liste des objets cliquables

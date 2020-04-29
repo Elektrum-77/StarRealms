@@ -137,6 +137,13 @@ public class Ability {
 		}
 	}
 	
+	public void disable() {
+		for(int i =0; i < disable.length; i++) {
+			disable[i]=true;
+		}
+		
+	}
+	
 	public ArrayList<SpecialAction> getSpecialActions() {
 		return specialActions;
 	}

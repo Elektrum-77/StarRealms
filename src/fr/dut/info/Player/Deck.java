@@ -59,6 +59,12 @@ public class Deck {
 		}
 	}
 	
+	public void addCardTopOfDeck(Card card, int n) {
+		for(int i = 0; i < n; i++) {
+			deck.add(0, card);
+		}
+	}
+	
 	public void fistAddCard(GameBoard gameBoard, Card card) {
 		if(card.getDefense()!=0) {
 			firstAddCard(gameBoard, card.copyBase(gameBoard, card), 1);

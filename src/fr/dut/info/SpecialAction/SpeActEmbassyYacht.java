@@ -6,6 +6,8 @@ import fr.dut.info.Player.Player;
 
 public class SpeActEmbassyYacht implements SpecialAction{
 	
+	/* +2 carte si deux bases en jeu au tour du joueur*/
+	
 	public void use(GameBoard gameBoard, Player player) {
 		Deck inPlay = player.getInPlayCards();
 		int countBase = 0;
