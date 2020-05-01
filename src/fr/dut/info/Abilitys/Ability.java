@@ -98,16 +98,12 @@ public class Ability {
 	public void useOR1(GameBoard gameBoard, Player player) {
 		if(authorityP!=0) {
 			useAuthority(gameBoard);
-			
 		}else if(tradingP!=0) {
 			useTrade(gameBoard);
-			
 		}else if(fightingP!=0) {
 			useCombat(gameBoard);
-			
 		}else if(nbDraw!=0) {
 			useDraw(gameBoard);
-			
 		}else if(specialActions.size()!=0) {
 			System.out.println("auth");
 			useAllSpecialActions(gameBoard, player);

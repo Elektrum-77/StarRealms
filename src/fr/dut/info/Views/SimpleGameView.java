@@ -603,8 +603,8 @@ public class SimpleGameView implements GameView {
 				if(gameBoard.cardIsInAHand(card.getId())) { // Si la carte est dans la main
 					if(card.getPrimary().exists()) { 
 						if(card.getPrimary().getOr()==true) {
-							list.put("Play(1st op)", "Play(1st op)");
 							list.put("Play(2nd op)", "Play(2nd op)");
+							list.put("Play(1st op)", "Play(1st op)");
 						}else {
 							list.put("Play", "Play");
 						}
@@ -618,24 +618,24 @@ public class SimpleGameView implements GameView {
 				}else if(gameBoard.getPlayingPlayer().getInPlayCards().isCardIdIn(card.getId())) { // Si la carte lui fait partie de ses cartes en jeu
 					if(card.getPrimary().exists()) {
 						if(card.getPrimary().getOr()) {
-							list.put("Primary(1st op)", "Primary(1st op)" );
 							list.put("Primary(2nd op)", "Primary(2nd op)" );
+							list.put("Primary(1st op)", "Primary(1st op)" );
 						}else {
 							list.put("Primary", "Primary");
 						}
 					}
 					if(card.getAlly().exists() && gameBoard.getPlayingPlayer().isPossibleAlly(card)) {
 						if(card.getAlly().getOr()) {
-							list.put("Ally(1st op)", "Ally(1st op)" );
 							list.put("Ally(2nd op)", "Ally(2nd op)" );
+							list.put("Ally(1st op)", "Ally(1st op)" );
 						}else {
 						list.put("Ally", "Ally"); 
 						}
 					}
 					if(card.getScrap().exists()) {
 						if(card.getScrap().getOr()) {
+							list.put("Scrap(2nd op)", "Scrap(2nd op)" );
 							list.put("Scrap(1st op)", "Scrap(1st op)" );
-							list.put("Scrap(2nd op)", "Scrap(1nd op)" );
 						}else {
 						list.put("Scrap", "Scrap");
 						}
