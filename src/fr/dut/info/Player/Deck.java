@@ -76,7 +76,9 @@ public class Deck {
 	
 	// Ajouter n fois une carte 
 	public void firstAddCard(GameBoard gameBoard, Card card, int n) {
+		
 		for(int i = 0; i < n; i++) {
+			
 			if(n > 1) {
 				if(card.getDefense()!=0) {
 					deck.add(card.copyBase(gameBoard, card));

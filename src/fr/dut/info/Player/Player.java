@@ -68,6 +68,7 @@ public class Player {
 	
 	// Joueur tire n carte de son deck
 	public void drawCards(int n) {
+		
 		for(int i = 0; i < n; i++) {
 			if(deck.isEmpty()) {
 				discardPileGoesDeck();
@@ -78,7 +79,9 @@ public class Player {
 				c.getAlly().setEnable();
 				c.getScrap().setEnable();
 				hand.addCard(c);
+				
 				deck.removeCard(c.getId());
+				
 			}catch(IndexOutOfBoundsException e){
 				System.out.println("Number of cards to draw is higher than the amount of cards in deck's player.");
 			}
@@ -150,7 +153,7 @@ public class Player {
 	public boolean sameFactionInGame(Card card) {
 		int n = inPlayCards.getSize();
 		for(int i = 0; i < n; i++) {
-			if(inPlayCards.getCard(i).getFaction()==card.getFaction() && (inPlayCards.getCard(i).getId() != card.getId())) {
+			if(inPlayCards.getCard(i).getFaction().equals(card.getFaction()) &&(!inPlayCards.getCard(i).getId().equals(card.getId()))) {
 				return true;
 			}
 		}

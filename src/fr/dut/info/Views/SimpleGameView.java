@@ -601,7 +601,14 @@ public class SimpleGameView implements GameView {
 				card = selectedObject.getCard();
 				
 				if(gameBoard.cardIsInAHand(card.getId())) { // Si la carte est dans la main
-					if(card.getPrimary().exists()) { list.put("Play", "Play");}
+					if(card.getPrimary().exists()) { 
+						if(card.getPrimary().getOr()==true) {
+							list.put("Play(1st op)", "Play(1st op)");
+							list.put("Play(2nd op)", "Play(2nd op)");
+						}else {
+							list.put("Play", "Play");
+						}
+					}
 					
 				}else if(gameBoard.cardIsInTradeRow(card.getId())) { // Si la carte est dans la liste d'achat
 					if(gameBoard.getTradePool() >= card.getCost()) {list.put("Buy for "+card.getCost(),"Buy");}
@@ -609,15 +616,35 @@ public class SimpleGameView implements GameView {
 					if(gameBoard.getFreeShipPool()>=1 && card.cardType()=="Ship") {list.put("Get for free", "Get for free"); }
 					
 				}else if(gameBoard.getPlayingPlayer().getInPlayCards().isCardIdIn(card.getId())) { // Si la carte lui fait partie de ses cartes en jeu
-					if(card.getPrimary().exists()) {list.put("Primary", "Primary");}
-					if(card.getAlly().exists() && gameBoard.getPlayingPlayer().isPossibleAlly(card)) {list.put("Ally", "Ally"); }
-					if(card.getScrap().exists()) {list.put("Scrap", "Scrap"); }
+					if(card.getPrimary().exists()) {
+						if(card.getPrimary().getOr()) {
+							list.put("Primary(1st op)", "Primary(1st op)" );
+							list.put("Primary(2nd op)", "Primary(2nd op)" );
+						}else {
+							list.put("Primary", "Primary");
+						}
+					}
+					if(card.getAlly().exists() && gameBoard.getPlayingPlayer().isPossibleAlly(card)) {
+						if(card.getAlly().getOr()) {
+							list.put("Ally(1st op)", "Ally(1st op)" );
+							list.put("Ally(2nd op)", "Ally(2nd op)" );
+						}else {
+						list.put("Ally", "Ally"); 
+						}
+					}
+					if(card.getScrap().exists()) {
+						if(card.getScrap().getOr()) {
+							list.put("Scrap(1st op)", "Scrap(1st op)" );
+							list.put("Scrap(2nd op)", "Scrap(1nd op)" );
+						}else {
+						list.put("Scrap", "Scrap");
+						}
+					}
 					
 				}else if (!gameBoard.cardIsInTradeRow(card.getId())){// la carte n'est pas dans ses cartes en jeu ni dans la ligne d'achat
 					if(card.cardType()=="Base") {
-						if(gameBoard.getCombatPool() >= card.getDefense()) {
-							list.put("Destroy", "Destroy");
-						}
+						if(gameBoard.getCombatPool() >= card.getDefense()) { list.put("Destroy", "Destroy"); }
+						if(gameBoard.getFreeDestroyBasePool() >= 1) {list.put("Free Destroy", "Free Destroy"); }
 					}
 				}
 				
@@ -683,28 +710,51 @@ public class SimpleGameView implements GameView {
 					gameBoard.updateTradePool(object.getLinkedCard().getCost()*(-1));
 					
 				}else if(object.getLinkedDeck().getName()=="Explorers"){
-					
 					card=gameBoard.getExplorers().getCard(0);
 					gameBoard.getPlayingPlayer().addCardtoDiscardPile(card);
 					gameBoard.getExplorers().removeCard(card.getId());
 				}
 				
 				return true;
-			}else if(label == "Play") {
+			}else if(label == "Play" || label == "Play(1st op)" || label == "Play(2nd op)") { 
+				
 				card = object.getLinkedCard();
+				if(label == "Play(1st op)") {
+					card.getPrimary().useOR1(gameBoard, gameBoard.getPlayingPlayer());
+
+				}else if(label == "Play(2nd op)") {
+					card.getPrimary().useOR2(gameBoard, gameBoard.getPlayingPlayer());
+
+				}else {
+					card.getPrimary().useAllSpecialActions(gameBoard, gameBoard.getPlayingPlayer());
+					card.getPrimary().use(gameBoard);
+					
+				}
 				gameBoard.getPlayingPlayer().addInPlayCard(card.getId());
-				
-				card.getPrimary().useAllSpecialActions(gameBoard, gameBoard.getPlayingPlayer());
-				card.getPrimary().use(gameBoard);
+				gameBoard.getPlayedCardTurn().add(card.getFaction());
 				clean();
-			}else if (label == "Primary") {
-				card = object.getLinkedCard();
-				card.usePrimary(gameBoard);
 				
-				
-			}else if(label == "Ally") {
+			}else if (label == "Primary" || label == "Primary(1st op)" || label == "Primary(2nd op)") {
 				card = object.getLinkedCard();
-				card.useAlly(gameBoard);
+				if(label == "Primary(1st op)") {
+					card.getPrimary().useOR1(gameBoard, gameBoard.getPlayingPlayer());
+				}else if(label == "Primary(2nd op)") {
+					card.getPrimary().useOR2(gameBoard, gameBoard.getPlayingPlayer());
+				}else {
+					card.getPrimary().useAllSpecialActions(gameBoard, gameBoard.getPlayingPlayer());
+					card.usePrimary(gameBoard);
+				}
+				return true;
+			}else if(label == "Ally" || label == "Ally(1st op)" || label == "Ally(2nd op)") {
+				card = object.getLinkedCard();
+				if(label == "Ally(1st op)") {
+					card.getAlly().useOR1(gameBoard, gameBoard.getPlayingPlayer());
+				}else if(label == "Ally(2nd op)") {
+					card.getAlly().useOR2(gameBoard, gameBoard.getPlayingPlayer());
+				}else {
+					card.getAlly().useAllSpecialActions(gameBoard, gameBoard.getPlayingPlayer());
+					card.useAlly(gameBoard);
+				}
 				return true;
 				
 			}else if(label == "Attack 1") { // On attaque avec un point de combat
@@ -720,7 +770,7 @@ public class SimpleGameView implements GameView {
 				gameBoard.updateCombatPool((-1)*i);
 				return true;
 				
-			}else if(label == "Scrap") {
+			}else if(label == "Scrap" || label == "Scrap(1st op)" || label == "Scrap(2nd op)") {
 				card = object.getLinkedCard();
 				if(gameBoard.cardIsInTradeRow(card.getId())) {
 					card.disableAllAbilitys();
@@ -730,7 +780,14 @@ public class SimpleGameView implements GameView {
 					gameBoard.getTradeRow().removeCard(card.getId());
 					gameBoard.updateScrapTradeRowPool(-1);
 				}else {
-					card.useScrap(gameBoard);
+					if(label == "Scrap (1st op)") {
+						card.getScrap().useOR1(gameBoard, gameBoard.getPlayingPlayer());
+					}else if(label == "Scrap (2nd op)") {
+						card.getScrap().useOR2(gameBoard, gameBoard.getPlayingPlayer());
+					}else {
+						card.useScrap(gameBoard);
+						card.getScrap().useAllSpecialActions(gameBoard, gameBoard.getPlayingPlayer());
+					}
 					// on réactive les capacités de la carte avant de la jeter
 					card.resetAbilitys();
 					gameBoard.getScarpHeap().addCard(card);
@@ -746,6 +803,7 @@ public class SimpleGameView implements GameView {
 						player = plyer;
 						gameBoard.updateCombatPool((-1)*card.getDefense());
 						player.getInPlayCards().removeCard(card.getId());
+						player.addCardtoDiscardPile(card);
 						break;
 					}
 				}
@@ -755,6 +813,20 @@ public class SimpleGameView implements GameView {
 				gameBoard.getPlayingPlayer().addCardToTopOfDeck(object.getLinkedCard(), 1);
 				gameBoard.getTradeRow().removeCard(object.getLinkedCard().getId());
 				gameBoard.updateFreeShipPool(-1);
+				
+			} else if(label == "Free Destroy") {
+				card = object.getLinkedCard();
+				Player player;
+				for(Player plyer: gameBoard.getPlayers()) {
+					if(plyer.getInPlayCards().isCardIdIn(card.getId())){
+						player = plyer;
+						gameBoard.updateFreeDestroyBasePool(-1);
+						player.getInPlayCards().removeCard(card.getId());
+						player.addCardtoDiscardPile(card);
+						break;
+					}
+				}
+			
 			}
 		}
 		return false;

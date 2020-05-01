@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import fr.dut.info.Card.Card;
-import fr.dut.info.Card.Ship;
 import fr.dut.info.Player.Deck;
 import fr.dut.info.Player.Player;
 
@@ -21,6 +20,8 @@ public class GameBoard {
 	private int cardIdAi; //compteur d'id
 	private int ScrapTradeRowPool;
 	private int freeShipPool;
+	private int freeDestroyBasePool;
+	private final ArrayList<String> logsPlayedCardTurn;
 	
 
 	public GameBoard() {
@@ -35,6 +36,20 @@ public class GameBoard {
 		cardIdAi = 0;
 		ScrapTradeRowPool = 0;
 		freeShipPool = 0;
+		freeDestroyBasePool=0;
+		logsPlayedCardTurn = new ArrayList<>();
+	}
+	
+	public ArrayList<String> getPlayedCardTurn() {
+		return logsPlayedCardTurn;
+	}
+	
+	public int getFreeDestroyBasePool() {
+		return freeDestroyBasePool;
+	}
+	
+	public void updateFreeDestroyBasePool(int i) {
+		freeDestroyBasePool+=i;
 	}
 	
 	public int getFreeShipPool() {
@@ -126,6 +141,7 @@ public class GameBoard {
 	
 	// Ajouter des cartes à tous les joueurs
 	public void addCardToAllPlayersDeck(Card card, int n) {
+		
 		for(Player player: players) {
 				player.getDeck().firstAddCard(this,card,n);
 		}
@@ -266,6 +282,7 @@ public class GameBoard {
 	public void endOfTurn(int i) {
 		tradePool=0;
 		combatPool=0;
+		logsPlayedCardTurn.clear();
 		playingPlayer.endHisTurn();
 		setThePlayer(i);
 	}
