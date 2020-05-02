@@ -21,9 +21,13 @@ public class Deck {
 	public String getName() {
 		return name;
 	}
-	
+
 	public int getSize() {
 		return deck.size();
+	}
+
+	public ArrayList<Card> getDeck() {
+		return deck;
 	}
 	
 	public Card getCard(String id) {

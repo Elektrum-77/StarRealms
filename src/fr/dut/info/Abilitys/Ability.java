@@ -148,29 +148,6 @@ public class Ability {
 		return specialActions;
 	}
 	
-	@Override
-	public String toString() {
-		StringBuilder str = new StringBuilder();
-		if (exists()) {
-			
-			str.append("______ ").append(" ______\n");
-			
-			if(fightingP>0) {
-				str.append("add ").append(fightingP).append(" Combat\n");
-			}
-			if(tradingP>0) {
-				str.append("add ").append(tradingP).append(" Trade\n");
-			}
-			if(authorityP>0) {
-				str.append("add ").append(authorityP).append(" Authority\n");
-			}
-			if(nbDraw>0) {
-				str.append("Draw ").append(authorityP).append(" cards\n");
-			}
-		}
-		return str.toString();
-	}
-	
 	public int getCombat() {
 		return fightingP;
 	}
