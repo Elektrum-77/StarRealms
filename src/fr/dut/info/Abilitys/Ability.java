@@ -14,19 +14,19 @@ public class Ability {
 	private final int nbDraw;
 	private final boolean[] disable;
 	private final ArrayList<SpecialAction> specialActions;
+	private final boolean or;
 	
-	
-	// plus une liste de capacités spéciales ?
 	//private int multipleChoice = 0;
 	
-	public Ability(int fightingP, int tradingP, int AuthorityP, int nbDraw, ArrayList<SpecialAction> specialActions) {
+	public Ability(int fightingP, int tradingP, int AuthorityP, int nbDraw, ArrayList<SpecialAction> specialActions, boolean or) {
 		this.fightingP = fightingP;
 		this.tradingP = tradingP;
 		this.authorityP = AuthorityP;
 		this.nbDraw = nbDraw;
-		disable = new boolean[4];  // Toutes les capacités ne sont pas désactivées
-		initDisable();
+		disable = new boolean[5];  // Toutes les capacités ne sont pas désactivées
 		this.specialActions = specialActions;
+		this.or = or;
+		initDisable();
 		// PAS A UTILISE EN PHASE 1
 		//if(fightingP != 0) {multipleChoice++;}
 		//if(tradingP != 0) {multipleChoice++;}
@@ -34,22 +34,26 @@ public class Ability {
 		//if(nbDraw != 0) {multipleChoice++;}
 	}
 	
-	public Ability(int fightingP, int tradingP, int AuthorityP, int nbDraw) {
-		this(fightingP, tradingP, AuthorityP, nbDraw, new ArrayList<SpecialAction>());
+	public Ability(int fightingP, int tradingP, int AuthorityP, int nbDraw, boolean or) {
+		this(fightingP, tradingP, AuthorityP, nbDraw, new ArrayList<SpecialAction>(), or);
 	}
 	
 	public Ability() {
-		this(0, 0, 0, 0, new ArrayList<SpecialAction>());
+		this(0, 0, 0, 0, new ArrayList<SpecialAction>(), false);
 	}
 	
+	public boolean getOr() {
+		return or;
+	}
 	
 	private void initDisable() {
 		// toute les capacité à zéro dès la construction sont considérées comme désactivé
 		boolean b = false;
-		if(fightingP != 0) {disable[0]=b; } else {disable[0]=!b; }
+		if(authorityP != 0) {disable[0]=b; } else {disable[0]=!b; }
 		if(tradingP != 0) {disable[1]=b; } else {disable[1]=!b; }
-		if(authorityP != 0) {disable[2]=b; } else {disable[2]=!b; }
+		if(fightingP != 0) {disable[2]=b; } else {disable[2]=!b; }
 		if(nbDraw != 0) {disable[3]=b; } else {disable[3]=!b; }
+		if(specialActions.size() !=0) {disable[4]=b; } else {disable[4]=!b; }
 	}
 	
 	
@@ -58,15 +62,10 @@ public class Ability {
 		
 	}
 	
-	public void useAllSpecialActions(GameBoard gameBoard, Player player) {
-		for(SpecialAction speAct: specialActions) {
-			speAct.use(gameBoard, player);
-		}
-	}
 	
 	// Renvoie false si on ne peut rien faire avec l'ability
 	public boolean exists() {
-		if (fightingP == 0 && tradingP == 0 && authorityP == 0 && nbDraw == 0) {
+		if (fightingP == 0 && tradingP == 0 && authorityP == 0 && nbDraw == 0 && specialActions.size() == 0) {
 			return false;
 		}
 		// On regarde si toutes les capacités  sont désactivées
@@ -96,6 +95,39 @@ public class Ability {
 		return list;
 	}
 	
+	public void useOR1(GameBoard gameBoard, Player player) {
+		if(authorityP!=0) {
+			useAuthority(gameBoard);
+		}else if(tradingP!=0) {
+			useTrade(gameBoard);
+		}else if(fightingP!=0) {
+			useCombat(gameBoard);
+		}else if(nbDraw!=0) {
+			useDraw(gameBoard);
+		}else if(specialActions.size()!=0) {
+			System.out.println("auth");
+			useAllSpecialActions(gameBoard, player);
+		}
+		disable();	
+		
+	}
+	
+	public void useOR2(GameBoard gameBoard, Player player) {
+		
+		if(specialActions.size()!=0) {
+			useAllSpecialActions(gameBoard, player);
+		}else if(nbDraw!=0) {
+			useDraw(gameBoard);
+		}else if(fightingP!=0) {
+			useCombat(gameBoard);
+		}else if(tradingP!=0) {
+			useTrade(gameBoard);
+		}else if(authorityP!=0) {
+			useAuthority(gameBoard);
+		}
+		disable();	
+	}
+	
 	// Action selon les points d'action
 	public void use(GameBoard gameBoard) {
 		if (fightingP != 0) {
@@ -114,6 +146,13 @@ public class Ability {
 			disable[i]=true;
 		}
 	}
+	
+	public void useAllSpecialActions(GameBoard gameBoard, Player player) {
+		for(SpecialAction speAct: specialActions) {
+			speAct.use(gameBoard, player);
+		}
+	}
+	
 	
 	public void useCombat(GameBoard gameBoard) {
 		gameBoard.updateCombatPool(fightingP);
@@ -185,7 +224,7 @@ public class Ability {
 	}
 	
 	public Ability copy(Ability ab) {
-		return new Ability(ab.getCombat(),ab.getTrade(),ab.getAuthority(),ab.getDraw(), ab.getSpecialActions());
+		return new Ability(ab.getCombat(),ab.getTrade(),ab.getAuthority(),ab.getDraw(), ab.getSpecialActions(), ab.getOr());
 	}
 
 	

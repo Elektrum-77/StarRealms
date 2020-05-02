@@ -127,5 +127,9 @@ abstract class AbstractCards implements Card{
 				);	
 	}
 	
+	@Override
+	public String toString() {
+		return id+" : "+name;
+	}
 	
 }

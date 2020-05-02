@@ -178,23 +178,28 @@ public class SimpleGameController {
 			Ability s;
 			while(sc.hasNextLine()) {
 				String[] tab = sc.nextLine().split("<|; |>");
+				/*
 				for(String st: tab) {
 					System.out.print(st+";");
 				}System.out.println("\n");
+				*/
+				
 				if(!tab[0].equals("###")) {
 					if(!tab[1].equals("b")) { // traitement vaisseaux
 						/*1 path *2 nom *3 faction *4 cout *5 primary *6 action spé primary *7 ally *8 actions spé ally *9 scrap *10 actions spé scrap * 
 						*/
-						p = createAbilitWithSpeAct(tab[5], tab[6]);
-						a = createAbilitWithSpeAct(tab[7], tab[8]);
-						s = createAbilitWithSpeAct(tab[9], tab[10]);
+						p = createAbilitWithSpeAct(tab[5], tab[6], tab[7]);
+						a = createAbilitWithSpeAct(tab[8], tab[9], tab[10]);
+						s = createAbilitWithSpeAct(tab[11], tab[12], tab[13]);
 						allCards.put(tab[1], new Ship("-1", new ImageIcon(SimpleGameController.class.getClassLoader().getResource(tab[1])).getImage(),tab[2], tab[3],Integer.parseInt(tab[4]),p,a,s));
 						
 					}else { // traitement bases
 						/*1 marqueur d'objet "base" *2 path *3 nom *4 faction *5 cout *6 defence *7 boolean outpost *8 primary *9 action spé primary *10 ally *11 actions spé ally *12 scrap *13 actions spé scrap * */
-						p = createAbilitWithSpeAct(tab[8], tab[9]);
-						a = createAbilitWithSpeAct(tab[10], tab[11]);
-						s = createAbilitWithSpeAct(tab[12], tab[13]);
+						
+						
+						p = createAbilitWithSpeAct(tab[8], tab[9], tab[10]);
+						a = createAbilitWithSpeAct(tab[11], tab[12], tab[13]);
+						s = createAbilitWithSpeAct(tab[14], tab[15], tab[16]);
 						Base b = new Base("-1", new ImageIcon(SimpleGameController.class.getClassLoader().getResource(tab[2])).getImage(),tab[3], tab[4],Integer.parseInt(tab[5]), Integer.parseInt(tab[6]), Boolean.parseBoolean(tab[7]),p,a,s);
 						allCards.put(tab[3], b);
 					}
@@ -209,25 +214,30 @@ public class SimpleGameController {
 			int v = numberByCard.get(name);
 			if(name.equals("Scout") || name.equals("Viper")) {
 				gameBoard.addCardToAllPlayersDeck(c, v);
+				
 			}else if(name.equals("Explorer")) {
 				gameBoard.initialiseExplorers(c, v);
+				
 			}else {
 				gameBoard.addCardToTradeDeck(c, v);
 			}
 		}
+		
 		return gameBoard;
 	}
 	
 	// Fonction qui créé l'ability et associe des actions spéciales si elles existent
-	public static Ability createAbilitWithSpeAct(String values, String actions) {
+	public static Ability createAbilitWithSpeAct(String values, String actions, String or) {
 		String[] acts = actions.split(",");
 		HashMap<String, SpecialAction> allSpecialActions = new HashMap<>();
 		allSpecialActions.put("SpeActEmbassyYacht", new SpeActEmbassyYacht());
 		allSpecialActions.put("SpeActBattlePod", new SpeActBattlePod());
 		allSpecialActions.put("SpeActBlobCarrier", new SpeActBlobCarrier());
-		
+		allSpecialActions.put("SpeActBlobDestroyer", new SpeActBlobDestroyer());
+		allSpecialActions.put("SpeActBlobWorld", new SpeActBlobWorld());
 		String[] v = values.split(",");
-		Ability ab = new Ability(Integer.parseInt(v[0]), Integer.parseInt(v[1]), Integer.parseInt(v[2]), Integer.parseInt(v[3]));
+		
+		Ability ab = new Ability(Integer.parseInt(v[0]), Integer.parseInt(v[1]), Integer.parseInt(v[2]), Integer.parseInt(v[3]), (or.equals("o") ?  true :false));
 		if(actions!="/") {
 			for(String name: acts) {
 				if(allSpecialActions.containsKey(name)) {

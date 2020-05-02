@@ -11,6 +11,9 @@
 <Ram, 2>
 <Battle Pod, 2>
 <Blob Carrier, 1>
+<Blob Destroyer, 2>
+<Blob Fighter, 3>
+<Blob World, 1>
 <Trade Pod, 3>
 ###< STAR EMPIRE
 <Corvette, 2>
