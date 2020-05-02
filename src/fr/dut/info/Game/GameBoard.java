@@ -19,8 +19,8 @@ public class GameBoard {
 	private int tradePool; // points de commerce durant la phase principale
 	private int combatPool; // points de combat durant la phase principale
 	private int cardIdAi; //compteur d'id
-	public String targetCardId;
-
+	private int ScrapTradeRowPool;
+	private int freeShipPool;
 	
 
 	public GameBoard() {
@@ -33,7 +33,28 @@ public class GameBoard {
 		tradePool = 0;
 		combatPool = 0;
 		cardIdAi = 0;
-		targetCardId = "";
+		ScrapTradeRowPool = 0;
+		freeShipPool = 0;
+	}
+	
+	public int getFreeShipPool() {
+		return freeShipPool;
+	}
+	
+	public void updateFreeShipPool(int i) {
+		freeShipPool+=i;
+	}
+	
+	public int getScrapTradeRowPool() {
+		return ScrapTradeRowPool;
+	}
+	
+	public void updateScrapTradeRowPool(int i) {
+		ScrapTradeRowPool+=i;
+	}
+	
+	public int getTradePool() {
+		return tradePool;
 	}
 	
 	
