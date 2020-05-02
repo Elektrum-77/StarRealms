@@ -22,6 +22,7 @@ public class GameBoard {
 	private int freeShipPool;
 	private int freeDestroyBasePool;
 	private final ArrayList<String> logsPlayedCardTurn;
+	public String targetCardId;
 	
 
 	public GameBoard() {
