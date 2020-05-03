@@ -8,24 +8,27 @@ import fr.dut.info.Player.Player;
 
 public class ScrapMarket extends AbstractAbilityTarget {
 
-	private final int nbCards;
-	
 	public ScrapMarket(int i) {
-		super();
-		nbCards = i;
+		super(i);
+	}
+
+
+	@Override
+	public void init(GameBoard gameBoard, Player player) {
+		super.init(gameBoard, player);
+		used = nbCards;
 	}
 	
 	@Override
 	public void use(GameBoard gameBoard, Player player) {
 		if (gameBoard.targetCardId != null) {
-			
+			if (used>0);
 		}
 	}
 
 	@Override
 	public boolean canBeUse(GameBoard gameBoard, Player player) {
-		// TODO Auto-generated method stub
-		return false;
+		return (used>0);
 	}
 
 	@Override

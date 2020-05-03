@@ -3,10 +3,23 @@ package fr.dut.info.Abilitys;
 import fr.dut.info.Game.GameBoard;
 import fr.dut.info.Player.Player;
 
-public abstract class AbstractAbilityTarget extends AbstractAbility implements AbillityTargetInterface {
+abstract class AbstractAbilityTarget extends AbstractAbility implements AbillityTargetInterface {
 
-	public AbstractAbilityTarget() { super(); }
+	final int nbCards;
+	int used;
 	
+	public AbstractAbilityTarget(int i) {
+		super();
+		nbCards = i;
+		used = i;
+	}
+
+	
+	@Override
+	public void init(GameBoard gameBoard, Player player) {
+		super.init(gameBoard, player);
+		used = nbCards;
+	}
 	
 
 }

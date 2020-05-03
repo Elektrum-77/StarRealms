@@ -3,7 +3,7 @@ package fr.dut.info.Abilitys;
 import fr.dut.info.Game.GameBoard;
 import fr.dut.info.Player.Player;
 
-public abstract class AbstractAbilityPoint extends AbstractAbility {
+abstract class AbstractAbilityPoint extends AbstractAbility {
 	
 	final int point;
 	

@@ -78,13 +78,6 @@ public class Ability {
 		return !b;
 	}
 	
-	// Renvoie true s'il plusieurs action sont possibles
-	/*
-	public boolean isMultipleChoice() {
-		return multipleChoice > 1;
-	}
-	*/
-	
 	// Revoie la liste des donnée de l'ability
 	public ArrayList<Integer> getData(){
 		 ArrayList<Integer> list = new ArrayList<>();
