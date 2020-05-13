@@ -2,22 +2,22 @@ package fr.dut.info.Card;
 
 import fr.dut.info.Abilitys.*;
 import fr.dut.info.Game.GameBoard;
+import fr.dut.info.Player.Player;
+
 import java.awt.Image;
 
 abstract class AbstractCards implements Card{
 	
-	private final String id;
-	private final Image image;
-	private final String name;
-	private final String faction;
-	private final int cost;
+	final String id;
+	final Image image;
+	final String name;
+	final String faction;
+	final int cost;
 	
 	// Différentes phases d'action
-	private final Ability primary;
-	private final Ability ally;
-	private final Ability scrap;
-	
-	public abstract String cardType(); // Renvoie le type de carte
+	final Ability primary;
+	final Ability ally;
+	final Ability scrap;
 	
 	public AbstractCards(String id, Image image, String name, String faction, int cost,  Ability primary, Ability ally, Ability scrap) {
 		// Mettre un require non null
@@ -32,104 +32,50 @@ abstract class AbstractCards implements Card{
 		this.scrap = scrap;
 	}
 
-	
-	public String getId() {
-		return id;
-	}
-	
-	
-	// Renvoie l'image de la carte
-	public Image getImage() {
-		return image;
-	}
-	
-	public String getName() {
-		return name;
-	}
+	@Override
+	public String getId() { return id; }
 
-	public int getCost() {
-		return cost;
+	@Override
+	public Image getImage() { return image; }
+
+	@Override
+	public String getName() { return name; }
+
+	@Override
+	public int getCost() { return cost;	}
+
+	@Override
+	public String getFaction() { return faction; }
+
+	@Override
+	public boolean hasPrimary() { return (primary != null); }
+	@Override
+	public boolean hasAlly() { return (ally != null); }
+	@Override
+	public boolean hasScrap() { return (scrap != null); }
+
+	@Override
+	public void usePrimary(GameBoard gameBoard) { primary.use(gameBoard); }
+	@Override
+	public void useAlly(GameBoard gameBoard) { ally.use(gameBoard); }
+	@Override
+	public void useScrap(GameBoard gameBoard) { scrap.use(gameBoard); }
+
+
+	@Override
+	public int getDefense() {
+		return 0;
 	}
 	
-	
-	public String getFaction() {
-		return faction;
-	}
-	
-	
-	public Ability getPrimary() {
-		return primary;
-	}
-	public Ability getAlly() {
-		return ally;
-	}
-	public Ability getScrap() {
-		return scrap;
-	}
-	
-	public void resetAbilitys() {
-		primary.setEnable();
-		ally.setEnable();
-		scrap.setEnable();
-	}
-	
-	public void disableAllAbilitys() {
-		primary.disable();
-		ally.disable();
-		scrap.disable();
-	}
-	
-	public void usePrimary(GameBoard gameBoard) {
-		primary.use(gameBoard);
-	}
-	
-	public void useAlly(GameBoard gameBoard) {
-		ally.use(gameBoard);
-	}
-	
-	public void useScrap(GameBoard gameBoard) {
-		scrap.use(gameBoard);
-		
+	@Override
+	public void init(GameBoard gameBoard) {
+		primary.init(gameBoard);
+		ally.init(gameBoard);
+		scrap.init(gameBoard);
 	}
 	
 	// Renvoie true si les faction sont les mêmes
 	public boolean isSameFaction(Card card) {
-		return card.getFaction() == faction;
+		return card.getFaction().equals(faction);
 	}
-
-	// Renvoie un nouveau vaisseau avec les même caractéristiques mais avec un nouvel id
-	public Ship copyShip(GameBoard gameBoard, Card card) {
-		return new Ship(
-				gameBoard.getAnId(),
-				card.getImage(),
-				card.getName(),
-				card.getFaction(),
-				card.getCost(),
-				card.getPrimary().copy(card.getPrimary()),
-				card.getAlly().copy(card.getAlly()),
-				card.getScrap().copy(card.getScrap())
-				);
-	}
-	
-	// Renvoie une nouvelle base avec les même caractéristiques mais avec un nouvel id
-	public Base copyBase(GameBoard gameBoard, Card card) {
-		return new Base(
-				gameBoard.getAnId(),
-				card.getImage(),
-				card.getName(),
-				card.getFaction(),
-				card.getCost(),
-				card.getDefense(),
-				card.getOutpost(),
-				card.getPrimary().copy(card.getPrimary()),
-				card.getAlly().copy(card.getAlly()),
-				card.getScrap().copy(card.getScrap())
-				);	
-	}
-	
-	@Override
-	public String toString() {
-		return id+" : "+name;
-	}
-	
 }

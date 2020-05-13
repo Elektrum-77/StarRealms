@@ -13,21 +13,20 @@ public interface Card {
 	String getFaction();
 	int getCost();
 	int getDefense();
-	boolean getOutpost();
-	Ability getPrimary();
-	Ability getAlly();
-	Ability getScrap();
-	void disableAllAbilitys();
-	void resetAbilitys();
-	abstract String cardType();
+	boolean isOutpost();
+
+	boolean hasPrimary();
+	boolean hasAlly();
+	boolean hasScrap();
 	
 	void usePrimary(GameBoard gameBoard);
 	void useAlly(GameBoard gameBoard);
 	void useScrap(GameBoard gameBoard);
+	void init(GameBoard gameBoard);
 	boolean isSameFaction(Card card);
+	Card copy();
 	
-	Ship copyShip(GameBoard gameBoard, Card card);
-	Base copyBase(GameBoard gameBoard, Card card);
+	
 	
 	
 	

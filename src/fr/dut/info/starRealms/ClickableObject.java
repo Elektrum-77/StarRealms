@@ -3,7 +3,7 @@ package fr.dut.info.starRealms;
 import java.util.Objects;
 
 import fr.dut.info.Card.Card;
-import fr.dut.info.Player.Deck;
+import fr.dut.info.Game.Deck;
 import fr.dut.info.Player.Player;
 import fr.dut.info.Views.GameView;
 

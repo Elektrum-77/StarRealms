@@ -21,8 +21,8 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 
 import fr.dut.info.Card.Card;
+import fr.dut.info.Game.Deck;
 import fr.dut.info.Game.GameBoard;
-import fr.dut.info.Player.Deck;
 import fr.dut.info.Player.Player;
 import fr.dut.info.starRealms.ClickableObject;
 import fr.dut.info.starRealms.Coordinates;

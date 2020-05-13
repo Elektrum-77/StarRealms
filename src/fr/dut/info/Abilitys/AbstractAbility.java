@@ -6,12 +6,12 @@ import fr.dut.info.Card.Card;
 import fr.dut.info.Game.GameBoard;
 import fr.dut.info.Player.Player;
 
-abstract class AbstractAbility implements AbilityInterface {
+abstract class AbstractAbility implements Ability {
 	
 	public AbstractAbility() {}
 	
-	public void init(GameBoard gameBoard, Player player) {}
+	public void init(GameBoard gameBoard) {}
 	
-	public ArrayList<Card> getTarget(GameBoard gameBoard, Player player) { return null; }
+	public ArrayList<Card> getTarget(GameBoard gameBoard) { return null; }
 
 }

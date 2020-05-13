@@ -13,19 +13,24 @@ public class FreeMarket extends AbstractAbilityTarget {
 	}
 
 	@Override
-	public void use(GameBoard gameBoard, Player player) {
+	public void use(GameBoard gameBoard) {
 	}
 
 	@Override
-	public boolean canBeUse(GameBoard gameBoard, Player player) {
+	public boolean canBeUse(GameBoard gameBoard) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public ArrayList<Card> getTarget(GameBoard gameBoard, Player player) {
+	public ArrayList<Card> getTarget(GameBoard gameBoard) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Ability copy() {
+		return new ScrapMarket(nbCards);
 	}
 
 }

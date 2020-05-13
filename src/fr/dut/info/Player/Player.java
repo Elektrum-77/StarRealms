@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import fr.dut.info.Card.Card;
+import fr.dut.info.Game.Deck;
 import fr.dut.info.Game.GameBoard;
 
 public class Player {
@@ -75,9 +76,9 @@ public class Player {
 			}
 			try {
 				Card c = deck.getCard(0);
-				c.getPrimary().setEnable();
-				c.getAlly().setEnable();
-				c.getScrap().setEnable();
+				c.getPrimary();
+				c.getAlly();
+				c.getScrap();
 				hand.addCard(c);
 				
 				deck.removeCard(c.getId());
@@ -137,8 +138,8 @@ public class Player {
 		}
 		inPlayCards.clean();
 		for(Card card: bases) {
-			card.getAlly().setEnable();
-			card.getPrimary().setEnable();
+			card.getAlly();
+			card.getPrimary();
 			inPlayCards.addCard(card);
 			
 		}

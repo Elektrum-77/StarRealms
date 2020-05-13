@@ -3,6 +3,7 @@ package fr.dut.info.Card;
 import java.awt.Image;
 
 import fr.dut.info.Abilitys.*;
+import fr.dut.info.Game.GameBoard;
 
 
 public class Base extends AbstractCards{
@@ -17,20 +18,24 @@ public class Base extends AbstractCards{
 		this.outpost=outpost;
 	}
 	
-	
-	@Override
-	public String cardType() {
-		return "Base";
-	}
-	
 	@Override
 	public int getDefense() {
 		return defense;
 	}
 	
 	@Override
-	public boolean getOutpost() {
+	public boolean isOutpost() {
 		return outpost;
 	}
-	
+
+	@Override
+	public Card copy() {
+		return new Base(
+				id, image,
+				name, faction,
+				cost,
+				defense, outpost,
+				primary, ally, scrap
+				);
+	}
 }

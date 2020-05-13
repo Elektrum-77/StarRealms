@@ -1,5 +1,5 @@
 package fr.dut.info.Abilitys;
 
-interface AbilityConditionalInterface extends AbilityInterface {
+interface AbilityConditionalInterface extends Ability {
 	
 }

@@ -8,8 +8,13 @@ public class TradePoint extends AbstractAbilityPoint {
 	public TradePoint(int p) { super(p); }
 
 	@Override
-	public void use(GameBoard gameBoard, Player player) {
+	public void use(GameBoard gameBoard) {
 		gameBoard.updateTradePool(point);
+	}
+
+	@Override
+	public Ability copy() {
+		return new TradePoint(point);
 	}
 
 	

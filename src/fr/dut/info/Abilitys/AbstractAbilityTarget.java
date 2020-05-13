@@ -16,8 +16,8 @@ abstract class AbstractAbilityTarget extends AbstractAbility implements Abillity
 
 	
 	@Override
-	public void init(GameBoard gameBoard, Player player) {
-		super.init(gameBoard, player);
+	public void init(GameBoard gameBoard) {
+		super.init(gameBoard);
 		used = nbCards;
 	}
 	

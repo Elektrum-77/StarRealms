@@ -5,6 +5,6 @@ import fr.dut.info.Card.Card;
 import fr.dut.info.Game.GameBoard;
 import fr.dut.info.Player.Player;
 
-interface AbillityTargetInterface extends AbilityInterface {
-	public ArrayList<Card> getTarget(GameBoard gameBoard, Player player);
+interface AbillityTargetInterface extends Ability {
+	public ArrayList<Card> getTarget(GameBoard gameBoard);
 }

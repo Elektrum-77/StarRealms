@@ -14,26 +14,29 @@ public class ScrapMarket extends AbstractAbilityTarget {
 
 
 	@Override
-	public void init(GameBoard gameBoard, Player player) {
-		super.init(gameBoard, player);
+	public void init(GameBoard gameBoard) {
+		super.init(gameBoard);
 		used = nbCards;
 	}
 	
 	@Override
-	public void use(GameBoard gameBoard, Player player) {
-		if (gameBoard.targetCardId != null) {
-			if (used>0);
-		}
+	public void use(GameBoard gameBoard) {
+//		if (gameBoard.targetCardId != null && used>0) {
+//		}
 	}
 
 	@Override
-	public boolean canBeUse(GameBoard gameBoard, Player player) {
+	public boolean canBeUse(GameBoard gameBoard) {
 		return (used>0);
 	}
 
 	@Override
-	public ArrayList<Card> getTarget(GameBoard gameBoard, Player player) {
-		return gameBoard.getTradeRow().getDeck();
+	public ArrayList<Card> getTarget(GameBoard gameBoard) {
+		return gameBoard.getTradeRow().getCopyList();
 	}
 
+	@Override
+	public Ability copy() {
+		return new ScrapMarket(nbCards);
+	}
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import fr.dut.info.Card.Card;
-import fr.dut.info.Player.Deck;
 import fr.dut.info.Player.Player;
 
 public class GameBoard {
@@ -22,7 +21,6 @@ public class GameBoard {
 	private int freeShipPool;
 	private int freeDestroyBasePool;
 	private final ArrayList<String> logsPlayedCardTurn;
-	public String targetCardId;
 	
 
 	public GameBoard() {

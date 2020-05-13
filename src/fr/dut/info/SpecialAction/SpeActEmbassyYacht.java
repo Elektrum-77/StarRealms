@@ -1,7 +1,7 @@
 package fr.dut.info.SpecialAction;
 
+import fr.dut.info.Game.Deck;
 import fr.dut.info.Game.GameBoard;
-import fr.dut.info.Player.Deck;
 import fr.dut.info.Player.Player;
 
 public class SpeActEmbassyYacht implements SpecialAction{
