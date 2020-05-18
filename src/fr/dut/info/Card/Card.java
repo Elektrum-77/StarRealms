@@ -7,7 +7,7 @@ import fr.dut.info.Game.GameBoard;
 
 public interface Card {
 
-	String getId();
+	int getId();
 	Image getImage();
 	String getName();
 	String getFaction();
@@ -24,7 +24,7 @@ public interface Card {
 	void useScrap(GameBoard gameBoard);
 	void init(GameBoard gameBoard);
 	boolean isSameFaction(Card card);
-	Card copy();
+	Card copy(GameBoard gameBoard);
 	
 	
 	

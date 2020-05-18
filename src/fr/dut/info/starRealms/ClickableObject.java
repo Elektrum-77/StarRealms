@@ -1,5 +1,6 @@
 package fr.dut.info.starRealms;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import fr.dut.info.Card.Card;
@@ -17,10 +18,10 @@ public class ClickableObject {
 	private final int width;
 	private final int length;
 	private final Card card;
-	private final Deck deck;
+	private final ArrayList<Card> deck;
 	private final int positionInList;
 	private final String label;
-	private final Deck linkedDeck;
+	private final ArrayList<Card> linkedDeck;
 	private final Card linkedCard;
 	private final Player linkedPlayer;
 	

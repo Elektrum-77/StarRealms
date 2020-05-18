@@ -11,19 +11,19 @@ public class Player {
 	
 	private final String name;
 	private int authorityP;
-	private Deck discardPile;
-	private Deck deck; // Deck personnel
-	private Deck hand; // cartes en mains
-	private Deck inPlayCards; // cartes en jeu
+	private ArrayList<Card> discardPile;
+	private ArrayList<Card> deck; // Deck personnel
+	private ArrayList<Card> hand; // cartes en mains
+	private ArrayList<Card> inPlayCards; // cartes en jeu
 	
 	
 	public Player(String name) {
 		this.name = name;
 		authorityP=50;
-		discardPile = new Deck("Discard Pile");
-		deck= new Deck("Deck");
-		hand = new Deck("Hand");
-		inPlayCards = new Deck("Played Card");
+		discardPile = new ArrayList<Card>();
+		deck= new ArrayList<Card>();
+		hand = new ArrayList<Card>();
+		inPlayCards = new ArrayList<Card>();
 	}
 	
 	
@@ -37,12 +37,12 @@ public class Player {
 	}
 	
 	// Renvoie le pile de défausse du joueur
-	public Deck getDiscard() {
+	public ArrayList<Card> getDiscard() {
 		return discardPile;
 	}
 	
 	// Renvoie le deck du joueur
-	public Deck getDeck() {
+	public ArrayList<Card> getDeck() {
 		return deck;
 	}
 	
@@ -58,12 +58,12 @@ public class Player {
 	
 	
 	// Renvoie la main du joueur
-	public Deck getHand() {
+	public ArrayList<Card> getHand() {
 		return hand;
 	}
 	
 	// Renvoie les cartes en jeu
-	public Deck getInPlayCards() {
+	public ArrayList<Card> getInPlayCards() {
 		return inPlayCards;
 	}
 	

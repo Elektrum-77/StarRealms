@@ -10,10 +10,10 @@ public class GameBoard {
 
 	private final ArrayList<Player> players;
 	private Player playingPlayer;
-	private final Deck explorers;
-	private  Deck tradeDeck;
-	private final Deck tradeRow;
-	private Deck scrapHeap; // Tas de ferraille devient le tradeDeck quand ce dernier est vide
+	private final ArrayList<Card> explorers;
+	private  ArrayList<Card> tradeDeck;
+	private final ArrayList<Card> tradeRow;
+	private ArrayList<Card> scrapHeap; // Tas de ferraille devient le tradeDeck quand ce dernier est vide
 	private int tradePool; // points de commerce durant la phase principale
 	private int combatPool; // points de combat durant la phase principale
 	private int cardIdAi; //compteur d'id
@@ -26,10 +26,10 @@ public class GameBoard {
 	public GameBoard() {
 		players = new ArrayList<>();
 		playingPlayer = null;
-		explorers = new Deck("Explorers");
-		tradeDeck = new Deck("Trade Deck");
-		tradeRow = new Deck("Trade Row");
-		scrapHeap = new Deck("Scrap Heap");
+		explorers = new ArrayList<Card>();
+		tradeDeck = new ArrayList<Card>();
+		tradeRow = new ArrayList<Card>();
+		scrapHeap = new ArrayList<Card>();
 		tradePool = 0;
 		combatPool = 0;
 		cardIdAi = 0;
@@ -77,24 +77,24 @@ public class GameBoard {
 	}
 	
 	// Obtenir un id;
-	public String getAnId() {
+	public int getAnId() {
 		cardIdAi+=1;
-		Integer id = cardIdAi;
-		return id.toString();
+		int id = cardIdAi;
+		return id;
 	}
 	
 	// Renvoie le tas de feraille
-	public Deck getScarpHeap() {
+	public ArrayList<Card> getScarpHeap() {
 		return scrapHeap;
 	}
 	
 	// Renvoie le Deck d'Explorers
-	public Deck getExplorers() {
+	public ArrayList<Card> getExplorers() {
 		return explorers;
 	}
 	
 	// Renvoie le Deck du jeu
-	public Deck getTradeDeck() {
+	public ArrayList<Card> getTradeDeck() {
 		return tradeDeck;
 	}
 	
@@ -109,7 +109,7 @@ public class GameBoard {
 	}
 	
 	// Renvoie le deck de la liste d'achat
-	public Deck getTradeRow() {
+	public ArrayList<Card> getTradeRow() {
 		return tradeRow;
 	}
 	
@@ -125,6 +125,9 @@ public class GameBoard {
 	
 	// Initialiser la pile Explorers 
 	public void initialiseExplorers(Card c, int n) {
+		for(int i = 0; i < n; i++) {
+			
+		}
 		explorers.firstAddCard(this, c, n);
 	}
 	
@@ -142,8 +145,16 @@ public class GameBoard {
 	public void addCardToAllPlayersDeck(Card card, int n) {
 		
 		for(Player player: players) {
-				player.getDeck().firstAddCard(this,card,n);
+			firstAddCard(this, player.getDeck(), card, n);
+				
 		}
+	}
+	
+	public static void firstAddCard(GameBoard gameBoard, ArrayList<Card> list, Card c, int n) {
+		for(int i = 0; i < n; i++) {
+			list.add(c.copy(gameBoard));
+		}
+		
 	}
 	
 	// Renvoi le joueur du tour actuel
@@ -192,13 +203,13 @@ public class GameBoard {
 	
 	// rempli la ligne d'achat s'il manque une carte
 	public void updateTradeRow() {
-		int missing = 5 - tradeRow.getSize();
+		int missing = 5 - tradeRow.size();
 		for(@SuppressWarnings("unused")int i = missing; missing >= 0; missing--) {
 			// Tas de feraille -> deck d'achat
 			if (tradeDeck.isEmpty()) {
 				scrapHeapGoesTradeDeck();
 			}
-			if(tradeRow.getSize()< 5 && !(tradeDeck.isEmpty())) {
+			if(tradeRow.size() < 5 && !(tradeDeck.isEmpty())) {
 				addCardToTradeRow();
 			}
 		}
@@ -206,8 +217,8 @@ public class GameBoard {
 	
 	// Prend une carte du deck d'achat et la met sur la ligne d'achat
 	private void addCardToTradeRow() {
-		tradeRow.addCard(tradeDeck.getCard(0));
-		tradeDeck.removeCard(tradeDeck.getCard(0).getId());
+		tradeRow.add(tradeDeck.get(0));
+		tradeDeck.remove(tradeDeck.get(0).getId());
 	}
 	
 	// Mélange chaque deck des joueurs
@@ -230,7 +241,7 @@ public class GameBoard {
 	public void scrapHeapGoesTradeDeck() {
 		if(!(scrapHeap.isEmpty())) {
 			tradeDeck=scrapHeap;
-			scrapHeap=new Deck("Scrap Heap");
+			scrapHeap=new ArrayList<Card>();
 		}
 	}
 	
