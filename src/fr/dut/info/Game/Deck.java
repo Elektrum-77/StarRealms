@@ -1,6 +1,7 @@
 package fr.dut.info.Game;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -27,4 +28,8 @@ public class Deck extends AbstractCardContainer {
 		}
 		return null;
 	}
+
+	// Mélange le deck
+	@Override
+	public void shuffle() { Collections.shuffle(list); }
 }

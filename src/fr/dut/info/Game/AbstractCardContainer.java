@@ -27,7 +27,6 @@ public abstract class AbstractCardContainer implements CardContainer {
 	@Override
 	public Card pickCardAt(int i) { return list.remove(i); }
 
-	@Override
 	public Card pickLastCard(int i) { return list.remove(list.size()-1); }
 
 	@Override
@@ -39,7 +38,6 @@ public abstract class AbstractCardContainer implements CardContainer {
 	@Override
 	public void deleteCardAt(Card card, int i) { list.remove(i); }
 
-	@Override
 	public void shuffle() { Collections.shuffle(list); }
 
 	@Override
