@@ -12,7 +12,7 @@ public class Base extends AbstractCards{
 	private final boolean outpost;
 	
 	
-	public Base(String id, Image image, String name, String faction, int cost, int defense, boolean outpost, Ability primary, Ability ally, Ability scrap) {
+	public Base(int id, Image image, String name, String faction, int cost, int defense, boolean outpost, Ability primary, Ability ally, Ability scrap) {
 		super(id, image, name, faction, cost, primary, ally, scrap);
 		this.defense= defense;
 		this.outpost=outpost;
@@ -29,9 +29,9 @@ public class Base extends AbstractCards{
 	}
 
 	@Override
-	public Card copy() {
+	public Card copy(GameBoard gameBoard) {
 		return new Base(
-				id, image,
+				gameBoard.getAnId(), image,
 				name, faction,
 				cost,
 				defense, outpost,

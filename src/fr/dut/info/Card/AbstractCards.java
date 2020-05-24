@@ -8,7 +8,7 @@ import java.awt.Image;
 
 abstract class AbstractCards implements Card{
 	
-	final String id;
+	final int id;
 	final Image image;
 	final String name;
 	final String faction;
@@ -19,7 +19,7 @@ abstract class AbstractCards implements Card{
 	final Ability ally;
 	final Ability scrap;
 	
-	public AbstractCards(String id, Image image, String name, String faction, int cost,  Ability primary, Ability ally, Ability scrap) {
+	public AbstractCards(int id, Image image, String name, String faction, int cost,  Ability primary, Ability ally, Ability scrap) {
 		// Mettre un require non null
 		this.id = id;
 		
@@ -33,7 +33,7 @@ abstract class AbstractCards implements Card{
 	}
 
 	@Override
-	public String getId() { return id; }
+	public int getId() { return id; }
 
 	@Override
 	public Image getImage() { return image; }
