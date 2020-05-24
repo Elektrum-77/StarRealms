@@ -20,7 +20,7 @@ public class Deck extends AbstractCardContainer {
 	}
 
 
-	public Card getCard(String id) {
+	public Card getCard(int id) {
 		for(Card card: list) {
 			if(card.getId() == id) {
 				return card;
@@ -29,7 +29,15 @@ public class Deck extends AbstractCardContainer {
 		return null;
 	}
 
+	
+	
 	// Mélange le deck
 	@Override
 	public void shuffle() { Collections.shuffle(list); }
+
+	@Override
+	public ArrayList<Card> getCopyList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

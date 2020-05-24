@@ -10,10 +10,10 @@ public class GameBoard {
 
 	private final ArrayList<Player> players;
 	private Player playingPlayer;
-	private final ArrayList<Card> explorers;
-	private  ArrayList<Card> tradeDeck;
-	private final ArrayList<Card> tradeRow;
-	private ArrayList<Card> scrapHeap; // Tas de ferraille devient le tradeDeck quand ce dernier est vide
+	private final Deck explorers;
+	private  Deck tradeDeck;
+	private final Deck tradeRow;
+	private Deck scrapHeap; // Tas de ferraille devient le tradeDeck quand ce dernier est vide
 	private int tradePool; // points de commerce durant la phase principale
 	private int combatPool; // points de combat durant la phase principale
 	private int cardIdAi; //compteur d'id
@@ -26,10 +26,10 @@ public class GameBoard {
 	public GameBoard() {
 		players = new ArrayList<>();
 		playingPlayer = null;
-		explorers = new ArrayList<Card>();
-		tradeDeck = new ArrayList<Card>();
-		tradeRow = new ArrayList<Card>();
-		scrapHeap = new ArrayList<Card>();
+		explorers = new Deck();
+		tradeDeck = new Deck();
+		tradeRow = new Deck();
+		scrapHeap = new Deck();
 		tradePool = 0;
 		combatPool = 0;
 		cardIdAi = 0;
@@ -84,17 +84,17 @@ public class GameBoard {
 	}
 	
 	// Renvoie le tas de feraille
-	public ArrayList<Card> getScarpHeap() {
+	public Deck getScarpHeap() {
 		return scrapHeap;
 	}
 	
 	// Renvoie le Deck d'Explorers
-	public ArrayList<Card> getExplorers() {
+	public Deck getExplorers() {
 		return explorers;
 	}
 	
 	// Renvoie le Deck du jeu
-	public ArrayList<Card> getTradeDeck() {
+	public Deck getTradeDeck() {
 		return tradeDeck;
 	}
 	
@@ -109,7 +109,7 @@ public class GameBoard {
 	}
 	
 	// Renvoie le deck de la liste d'achat
-	public ArrayList<Card> getTradeRow() {
+	public Deck getTradeRow() {
 		return tradeRow;
 	}
 	
@@ -125,15 +125,12 @@ public class GameBoard {
 	
 	// Initialiser la pile Explorers 
 	public void initialiseExplorers(Card c, int n) {
-		for(int i = 0; i < n; i++) {
-			
-		}
 		explorers.firstAddCard(this, c, n);
 	}
 	
 	// Ajouter - des - cartes au Deck d'achat
 	public void addCardToTradeDeck(Card card,int n) {
-		tradeDeck.firstAddCard(this, card,n);
+		tradeDeck.firstAddCard(this, card, n);
 	}
 	
 	// Ajouter - une - carte au Deck d'achat
@@ -143,19 +140,11 @@ public class GameBoard {
 	
 	// Ajouter des cartes à tous les joueurs
 	public void addCardToAllPlayersDeck(Card card, int n) {
-		
 		for(Player player: players) {
-			firstAddCard(this, player.getDeck(), card, n);
-				
+			 player.getDeck().firstAddCard(this, card, n);
 		}
 	}
 	
-	public static void firstAddCard(GameBoard gameBoard, ArrayList<Card> list, Card c, int n) {
-		for(int i = 0; i < n; i++) {
-			list.add(c.copy(gameBoard));
-		}
-		
-	}
 	
 	// Renvoi le joueur du tour actuel
 	public Player getPlayingPlayer() {
@@ -203,13 +192,13 @@ public class GameBoard {
 	
 	// rempli la ligne d'achat s'il manque une carte
 	public void updateTradeRow() {
-		int missing = 5 - tradeRow.size();
+		int missing = 5 - tradeRow.getSize();
 		for(@SuppressWarnings("unused")int i = missing; missing >= 0; missing--) {
 			// Tas de feraille -> deck d'achat
 			if (tradeDeck.isEmpty()) {
 				scrapHeapGoesTradeDeck();
 			}
-			if(tradeRow.size() < 5 && !(tradeDeck.isEmpty())) {
+			if(tradeRow.getSize() < 5 && !(tradeDeck.isEmpty())) {
 				addCardToTradeRow();
 			}
 		}
@@ -217,8 +206,7 @@ public class GameBoard {
 	
 	// Prend une carte du deck d'achat et la met sur la ligne d'achat
 	private void addCardToTradeRow() {
-		tradeRow.add(tradeDeck.get(0));
-		tradeDeck.remove(tradeDeck.get(0).getId());
+		tradeRow.addCard(tradeDeck.pickCardAt(0));
 	}
 	
 	// Mélange chaque deck des joueurs
@@ -241,7 +229,7 @@ public class GameBoard {
 	public void scrapHeapGoesTradeDeck() {
 		if(!(scrapHeap.isEmpty())) {
 			tradeDeck=scrapHeap;
-			scrapHeap=new ArrayList<Card>();
+			scrapHeap=new Deck();
 		}
 	}
 	
@@ -276,7 +264,7 @@ public class GameBoard {
 		return list;
 	}
 
-	public boolean cardIsInAHand(String id) {
+	public boolean cardIsInAHand(int id) {
 		for(Player player: players) {
 			if(player.getHand().isCardIdIn(id)){
 				return true;
@@ -285,7 +273,7 @@ public class GameBoard {
 		return false;
 	}
 	
-	public boolean cardIsInTradeRow(String id) {
+	public boolean cardIsInTradeRow(int id) {
 		return tradeRow.isCardIdIn(id);
 	}
 	

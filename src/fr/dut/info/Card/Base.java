@@ -28,6 +28,10 @@ public class Base extends AbstractCards{
 		return outpost;
 	}
 
+	public String type() {
+		return "Base";
+	}
+	
 	@Override
 	public Card copy(GameBoard gameBoard) {
 		return new Base(

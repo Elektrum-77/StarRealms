@@ -14,6 +14,7 @@ public interface Card {
 	int getCost();
 	int getDefense();
 	boolean isOutpost();
+	String type();
 
 	boolean hasPrimary();
 	boolean hasAlly();

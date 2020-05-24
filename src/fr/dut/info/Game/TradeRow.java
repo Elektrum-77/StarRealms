@@ -1,9 +1,6 @@
 package fr.dut.info.Game;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Objects;
-
 import fr.dut.info.Card.Card;
 
 public class TradeRow extends AbstractCardContainer {
@@ -17,7 +14,7 @@ public class TradeRow extends AbstractCardContainer {
 	@Override
 	public int getSize() { return 5; }
 
-	@Override
+	
 	public ArrayList<Card> getList() {
 		ArrayList<Card> end = new ArrayList<>();
 		for (int i = 0; i < 5; i++) { end.add(list[i]); }
@@ -37,8 +34,8 @@ public class TradeRow extends AbstractCardContainer {
 		return null;
 	}
 
-	@Override	
-	public Card getCard(String id) {
+	
+	public Card getCard(int id) {
 		for(Card card: list) {
 			if(card.getId() == id) {
 				return card;
@@ -62,5 +59,11 @@ public class TradeRow extends AbstractCardContainer {
 		for (int i = 0; i<5;i++) {
 			list[i] = null;
 		}
+	}
+
+	@Override
+	public ArrayList<Card> getCopyList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

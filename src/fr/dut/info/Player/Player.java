@@ -11,19 +11,19 @@ public class Player {
 	
 	private final String name;
 	private int authorityP;
-	private ArrayList<Card> discardPile;
-	private ArrayList<Card> deck; // Deck personnel
-	private ArrayList<Card> hand; // cartes en mains
-	private ArrayList<Card> inPlayCards; // cartes en jeu
+	private Deck discardPile;
+	private Deck deck; // Deck personnel
+	private Deck hand; // cartes en mains
+	private Deck inPlayCards; // cartes en jeu
 	
 	
 	public Player(String name) {
 		this.name = name;
 		authorityP=50;
-		discardPile = new ArrayList<Card>();
-		deck= new ArrayList<Card>();
-		hand = new ArrayList<Card>();
-		inPlayCards = new ArrayList<Card>();
+		discardPile = new Deck();
+		deck= new Deck();
+		hand = new Deck();
+		inPlayCards = new Deck();
 	}
 	
 	
@@ -37,33 +37,38 @@ public class Player {
 	}
 	
 	// Renvoie le pile de défausse du joueur
-	public ArrayList<Card> getDiscard() {
+	public Deck getDiscard() {
 		return discardPile;
 	}
 	
 	// Renvoie le deck du joueur
-	public ArrayList<Card> getDeck() {
+	public Deck getDeck() {
 		return deck;
 	}
 	
 	// Ajouter n cartes au deck du joueur
 	public void addCardToDeck(Card card, int n) {
-			deck.addCard(card, n);
+		for(int i = 0; i < n; i++) {
+			deck.addCard(card);
+		}
 	}
 	
 	// Ajouter n cartes au deck du joueur
 	public void addCardToTopOfDeck(Card card, int n) {
-			deck.addCardTopOfDeck(card, n);
+		for(int i = 0; i < n; i++) {
+			deck.addCardAt(card, 0);
+		}
+			
 	}
 	
 	
 	// Renvoie la main du joueur
-	public ArrayList<Card> getHand() {
+	public Deck getHand() {
 		return hand;
 	}
 	
 	// Renvoie les cartes en jeu
-	public ArrayList<Card> getInPlayCards() {
+	public Deck getInPlayCards() {
 		return inPlayCards;
 	}
 	
@@ -75,13 +80,15 @@ public class Player {
 				discardPileGoesDeck();
 			}
 			try {
-				Card c = deck.getCard(0);
+				Card c = deck.getCardAt(0);
+				/*
 				c.getPrimary();
 				c.getAlly();
 				c.getScrap();
+				*/
 				hand.addCard(c);
 				
-				deck.removeCard(c.getId());
+				deck.deleteCardById(c.getId());
 				
 			}catch(IndexOutOfBoundsException e){
 				System.out.println("Number of cards to draw is higher than the amount of cards in deck's player.");
@@ -90,9 +97,9 @@ public class Player {
 	}
 	
 	// Ajoute au cartes en jeux du joueur la carte de sa main désigné par sa position n dans la main
-	public void addInPlayCard(String id) {
-		inPlayCards.addCard(hand.getCard(id));
-		hand.removeCard(id);
+	public void addInPlayCard(int id) {
+		inPlayCards.addCard(hand.pickById(id));
+		;
 	}
 	
 	// La défausse du joueur est mélangée et devient son nouveau deck
@@ -101,7 +108,7 @@ public class Player {
 		for(int i = 0; i < discardPile.getSize(); i++) {
 			deck.addCard(discardPile.getCard(i));
 		}
-		discardPile.clean();
+		discardPile.clear();
 	}
 	
 	
@@ -130,23 +137,25 @@ public class Player {
 		// les cartes joué qui ne sont pas des bases sont mise dans la défausse du joueur
 		ArrayList<Card> bases = new ArrayList<>();
 		for(int i = 0; i < inPlayCards.getSize(); i++) {
-			if(inPlayCards.getCard(i).cardType()=="Base") {
+			if(inPlayCards.getCard(i).type()=="Base") {
 				bases.add(inPlayCards.getCard(i));
 			}else {
-				discardPile.addCard(inPlayCards.getCard(i));
+				discardPile.addCard(inPlayCards.pickCardAt(i));
 			}
 		}
-		inPlayCards.clean();
+		inPlayCards.clear();
 		for(Card card: bases) {
+			/*
 			card.getAlly();
 			card.getPrimary();
+			*/
 			inPlayCards.addCard(card);
 			
 		}
 		for(int j = 0; j < hand.getSize(); j++) {
 			discardPile.addCard(hand.getCard(j));
 		}
-		hand.clean();
+		hand.clear();
 		drawCards(5);
 	}
 		
@@ -154,7 +163,7 @@ public class Player {
 	public boolean sameFactionInGame(Card card) {
 		int n = inPlayCards.getSize();
 		for(int i = 0; i < n; i++) {
-			if(inPlayCards.getCard(i).getFaction().equals(card.getFaction()) &&(!inPlayCards.getCard(i).getId().equals(card.getId()))) {
+			if(inPlayCards.getCard(i).getFaction().equals(card.getFaction()) &&(!(inPlayCards.getCardAt(i).getId()==card.getId()))) {
 				return true;
 			}
 		}
@@ -163,8 +172,7 @@ public class Player {
 		
 	// La carte en jeu position i va dans le tas de ferraille
 	public void cardInPlayToScrapHeap(GameBoard gameBoard, int i) {
-		gameBoard.addCardToScrapHeap(inPlayCards.getCard(i));
-		inPlayCards.removeCard(inPlayCards.getCard(i).getId());
+		gameBoard.addCardToScrapHeap(inPlayCards.pickCardAt(i));
 	}
 	
 	
@@ -190,7 +198,7 @@ public class Player {
 	public boolean hasNoOutPostBase() {
 		Boolean thereIsOutPost = false;
 		for(int i = 0; i < inPlayCards.getSize(); i++) {
-			if(inPlayCards.getCard(i).getOutpost()) {
+			if(inPlayCards.getCard(i).isOutpost()) {
 				thereIsOutPost=true;
 			}
 		}

@@ -420,7 +420,7 @@ public class SimpleGameView implements GameView {
 		Deck hand = player.getHand();
 		for(int i = 0; i < hand.getSize(); i++) {
 			if(player.equals(gameBoard.getPlayingPlayer())) {
-				if(hand.getCard(i).cardType()=="Base") {
+				if(hand.getCard(i).type()=="Base") {
 					y= yf + 30; w = lf; l = wf; marginRight= marginRightI + 70;
 				}else{
 					y= yf; w = wf; l = lf; marginRight = marginRightI;
@@ -452,7 +452,7 @@ public class SimpleGameView implements GameView {
 		
 		for(int i = 0; i < inPlayCards.getSize(); i++) {
 			
-			if(inPlayCards.getCard(i).cardType()=="Base") {
+			if(inPlayCards.getCard(i).type()=="Base") {
 				y= yf + 30; w = lf; l = wf; marginRight = marginRightI + 40;
 			}else{
 				y= yf; w = wf; l = lf; marginRight = marginRightI;
@@ -514,7 +514,7 @@ public class SimpleGameView implements GameView {
 			// Main du joueur
 			Deck tradeRow = gameBoard.getTradeRow();
 			for(int i = 0; i < tradeRow.getSize(); i++) {
-				if(tradeRow.getCard(i).cardType()=="Base") {
+				if(tradeRow.getCard(i).type()=="Base") {
 					y= yi + 30; w = li; l = wi; marginRight= marginRightI+80;
 				}else{
 					y= yi; w = wi; l = li; marginRight = marginRightI;

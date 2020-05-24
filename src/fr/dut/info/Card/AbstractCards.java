@@ -34,6 +34,9 @@ abstract class AbstractCards implements Card{
 
 	@Override
 	public int getId() { return id; }
+	
+	@Override
+	public abstract String type();
 
 	@Override
 	public Image getImage() { return image; }
@@ -78,4 +81,5 @@ abstract class AbstractCards implements Card{
 	public boolean isSameFaction(Card card) {
 		return card.getFaction().equals(faction);
 	}
+	
 }

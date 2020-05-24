@@ -1,6 +1,5 @@
 package fr.dut.info.starRealms;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import fr.dut.info.Card.Card;
@@ -9,7 +8,7 @@ import fr.dut.info.Player.Player;
 import fr.dut.info.Views.GameView;
 
 
-/// A OPTI MDR CEST MOCHE
+
 public class ClickableObject {
 	private final int x1;
 	private final int y1;
@@ -18,16 +17,16 @@ public class ClickableObject {
 	private final int width;
 	private final int length;
 	private final Card card;
-	private final ArrayList<Card> deck;
+	private final Deck deck;
 	private final int positionInList;
 	private final String label;
-	private final ArrayList<Card> linkedDeck;
+	private final Deck linkedDeck;
 	private final Card linkedCard;
 	private final Player linkedPlayer;
 	
 	
 	private ClickableObject(String label, int x1, int y1, int x2, int y2, Card card, Deck deck, int positionInList, Deck linkedDeck, Card linkedCard, Player linkedPlayer) {
-		this.label=label;
+		this.label = label;
 		this.deck = deck;
 		this.card = card;
 		this.linkedDeck = linkedDeck;

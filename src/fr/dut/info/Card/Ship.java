@@ -3,10 +3,11 @@ package fr.dut.info.Card;
 import java.awt.Image;
 
 import fr.dut.info.Abilitys.*;
+import fr.dut.info.Game.GameBoard;
 
 public class Ship extends AbstractCards{
 	
-	public Ship(String id, Image image, String name, String faction, int cost, Ability primary, Ability ally, Ability scrap) {
+	public Ship(int id, Image image, String name, String faction, int cost, Ability primary, Ability ally, Ability scrap) {
 		super(id, image, name, faction, cost, primary, ally, scrap);
 	}
 
@@ -15,10 +16,14 @@ public class Ship extends AbstractCards{
 		return false;
 	}
 
+	public String type() {
+		return "Ship";
+	}
+	
 	@Override
-	public Card copy() {
+	public Card copy(GameBoard gameBoard) {
 		return new Ship(
-				id, image,
+				gameBoard.getAnId(), image,
 				name, faction,
 				cost,
 				primary, ally, scrap
