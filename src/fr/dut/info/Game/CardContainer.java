@@ -14,6 +14,7 @@ public interface CardContainer {
 	public void addCard(Card card);
 	public void addCardAt(Card card, int i);
 	public void deleteCardAt(Card card, int i);
+	public void deleteCardById(int id);
 	public void firstAddCard(GameBoard gameBoard, Card c, int n);
 	public boolean isEmpty();
 	public Card pickById(int id);

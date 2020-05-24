@@ -29,10 +29,10 @@ public class Deck extends AbstractCardContainer {
 		return null;
 	}
 
+	public Card pickLastCard(int i) { return list.remove(list.size()-1); }
 	
 	
 	// Mélange le deck
-	@Override
 	public void shuffle() { Collections.shuffle(list); }
 
 	@Override

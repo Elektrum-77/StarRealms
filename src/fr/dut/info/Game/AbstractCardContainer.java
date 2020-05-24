@@ -23,10 +23,7 @@ public abstract class AbstractCardContainer implements CardContainer {
 	
 	@Override
 	public boolean isEmpty() {
-		if(list.size()==0) {
-			return true;
-		}
-		return false;
+		return (getSize() == 0);
 	}
 	
 	@Override
@@ -34,8 +31,7 @@ public abstract class AbstractCardContainer implements CardContainer {
 
 	@Override
 	public Card pickCardAt(int i) { return list.remove(i); }
-
-	public Card pickLastCard(int i) { return list.remove(list.size()-1); }
+	
 	
 	@Override
 	public Card pickById(int id) { 
@@ -65,9 +61,13 @@ public abstract class AbstractCardContainer implements CardContainer {
 	@Override
 	public void addCardAt(Card card, int i) { list.add(i, card); }
 
+	/* this shouldn't be used */
 	@Override
 	public void deleteCardAt(Card card, int i) { list.remove(i); }
 	
+
+	/* this shouldn't be used */
+	@Override
 	public void deleteCardById(int id) {
 		for(int i = 0; i < list.size(); i++) {
 			if(list.get(i).getId()==id) {

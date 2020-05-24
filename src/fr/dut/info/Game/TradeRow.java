@@ -14,11 +14,12 @@ public class TradeRow extends AbstractCardContainer {
 	@Override
 	public int getSize() { return 5; }
 
-	
-	public ArrayList<Card> getList() {
-		ArrayList<Card> end = new ArrayList<>();
-		for (int i = 0; i < 5; i++) { end.add(list[i]); }
-		return end;
+	@Override
+	public ArrayList<Card> getCopyList() {
+//		ArrayList<Card> end = new ArrayList<>();
+//		for (int i = 0; i < 5; i++) { end.add(list[i].copy()); }
+//		return end;
+		return null;
 	}
 
 	@Override
@@ -27,13 +28,6 @@ public class TradeRow extends AbstractCardContainer {
 		list[i]=null;
 		return end;
 	}
-
-	/* DO NOT USE THIS ON TRADEROW */
-	@Override
-	public Card pickLastCard(int i) {
-		return null;
-	}
-
 	
 	public Card getCard(int id) {
 		for(Card card: list) {
@@ -53,6 +47,21 @@ public class TradeRow extends AbstractCardContainer {
 			}
 		}
 	}
+	
+	public int getMissing() {
+		int n = 0;
+		for (int i = 0; i<5; i++) {
+			if (list[i]==null) {
+				n++;
+			}
+		}
+		return n;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return (getMissing() == 0);
+	}
 
 	@Override
 	public void clear() {
@@ -61,9 +70,4 @@ public class TradeRow extends AbstractCardContainer {
 		}
 	}
 
-	@Override
-	public ArrayList<Card> getCopyList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
