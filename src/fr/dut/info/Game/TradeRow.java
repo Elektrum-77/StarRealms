@@ -18,7 +18,7 @@ public class TradeRow extends AbstractCardContainer {
 	public int getSize() { return 5; }
 
 	@Override
-	public ArrayList<Card> getList() {
+	public ArrayList<Card> getCopyList() {
 		ArrayList<Card> end = new ArrayList<>();
 		for (int i = 0; i < 5; i++) { end.add(list[i]); }
 		return end;
@@ -33,28 +33,28 @@ public class TradeRow extends AbstractCardContainer {
 
 	/* DO NOT USE THIS ON TRADEROW */
 	@Override
-	public Card pickLastCard(int i) {
-		return null;
-	}
-
-	@Override	
-	public Card getCard(String id) {
-		for(Card card: list) {
-			if(card.getId() == id) {
-				return card;
-			}
-		}
+	public Card pickLastCard() {
 		return null;
 	}
 
 	@Override
 	public void addCard(Card card) {
-		for (int i = 0; i<5;i++) {
+		for (int i = 0; i<5; i++) {
 			if (list[i]==null) {
 				list[i] = card;
 				return;
 			}
 		}
+	}
+	
+	public int getMissing() {
+		int n = 0;
+		for (int i = 0; i<5; i++) {
+			if (list[i]==null) {
+				n++;
+			}
+		}
+		return n;
 	}
 
 	@Override
