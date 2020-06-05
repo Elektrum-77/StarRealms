@@ -8,10 +8,22 @@ import fr.dut.info.Player.Player;
 
 abstract class AbstractAbility implements Ability {
 	
+	private boolean used = false;
+
 	public AbstractAbility() {}
-	
-	public void init(GameBoard gameBoard) {}
 	
 	public ArrayList<Card> getTarget(GameBoard gameBoard) { return null; }
 
+	public void use(GameBoard gameBoard) {
+		if (used) return;
+		used = true;
+	}
+	
+	public boolean canBeUse(GameBoard gameBoard) {
+		return !used;
+	}
+	
+	public void init(GameBoard gameBoard) {
+		used = false;
+	}
 }

@@ -21,5 +21,14 @@ abstract class AbstractAbilityTarget extends AbstractAbility implements Abillity
 		used = nbCards;
 	}
 	
+	@Override
+	public boolean canBeUse(GameBoard gameBoard) {
+		return false;
+	}
+
+	@Override
+	public void use(GameBoard gameBoard) {
+		if (!canBeUse(gameBoard)) return;
+	}
 
 }

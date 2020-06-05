@@ -6,6 +6,8 @@ import fr.dut.info.Player.Player;
 
 import java.awt.Image;
 
+import javax.swing.ImageIcon;
+
 abstract class AbstractCards implements Card{
 	
 	final int id;

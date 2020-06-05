@@ -9,6 +9,7 @@ public class TradePoint extends AbstractAbilityPoint {
 
 	@Override
 	public void use(GameBoard gameBoard) {
+		super.use(gameBoard);
 		gameBoard.updateTradePool(point);
 	}
 

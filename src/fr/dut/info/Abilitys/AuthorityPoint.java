@@ -9,6 +9,7 @@ public class AuthorityPoint extends AbstractAbilityPoint {
 
 	@Override
 	public void use(GameBoard gameBoard) {
+		super.use(gameBoard);
 		gameBoard.updateAuthority(point);
 	}
 	

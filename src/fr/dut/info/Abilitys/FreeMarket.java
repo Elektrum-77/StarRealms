@@ -14,12 +14,7 @@ public class FreeMarket extends AbstractAbilityTarget {
 
 	@Override
 	public void use(GameBoard gameBoard) {
-	}
-
-	@Override
-	public boolean canBeUse(GameBoard gameBoard) {
-		// TODO Auto-generated method stub
-		return false;
+		super.use(gameBoard);
 	}
 
 	@Override

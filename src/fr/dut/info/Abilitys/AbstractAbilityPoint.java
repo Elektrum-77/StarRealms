@@ -12,9 +12,5 @@ abstract class AbstractAbilityPoint extends AbstractAbility {
 		point = p;
 	}
 	
-	@Override
-	public boolean canBeUse(GameBoard gameBoard) {
-		return true;
-	}
 	
 }

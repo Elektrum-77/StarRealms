@@ -19,6 +19,7 @@ public class AndConditionalAbility extends AbstractAbilityConditional{
 
 	@Override
 	public void use(GameBoard gameBoard) {
+		super.use(gameBoard);
 		ability.use(gameBoard);
 		abilitySecond.use(gameBoard);
 	}
