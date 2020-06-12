@@ -8,7 +8,7 @@ import fr.dut.info.Player.Player;
 
 abstract class AbstractAbility implements Ability {
 	
-	private boolean used = false;
+	boolean used = false;
 
 	public AbstractAbility() {}
 	

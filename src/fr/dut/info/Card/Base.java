@@ -18,8 +18,8 @@ public class Base extends AbstractCards{
 		this.outpost=outpost;
 	}
 
-	public Base(Image image, String name, String faction, int cost, int defense, boolean outpost, Ability primary, Ability ally, Ability scrap) {
-		super(-1, image, name, faction, cost, primary, ally, scrap);
+	public Base(String name, String faction, int cost, int defense, boolean outpost, Ability primary, Ability ally, Ability scrap) {
+		super(-1, null, name, faction, cost, primary, ally, scrap);
 		this.defense= defense;
 		this.outpost=outpost;
 	}
@@ -51,7 +51,6 @@ public class Base extends AbstractCards{
 	
 	public Card copy() {
 		return new Base(
-				image,
 				name, faction,
 				cost,
 				defense, outpost,

@@ -3,7 +3,7 @@ package fr.dut.info.Abilitys;
 import fr.dut.info.Game.GameBoard;
 import fr.dut.info.Player.Player;
 
-abstract class AbstractAbilityTarget extends AbstractAbility implements AbillityTargetInterface {
+abstract class AbstractAbilityTarget extends AbstractAbility{
 
 	final int nbCards;
 	int used;

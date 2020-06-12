@@ -13,8 +13,8 @@ public class Ship extends AbstractCards{
 		super(id, image, name, faction, cost, primary, ally, scrap);
 	}
 
-	public Ship(Image image, String name, String faction, int cost, Ability primary, Ability ally, Ability scrap) {
-		super(-1, image, name, faction, cost, primary, ally, scrap);
+	public Ship(String name, String faction, int cost, Ability primary, Ability ally, Ability scrap) {
+		super(-1, null, name, faction, cost, primary, ally, scrap);
 	}
 
 	@Override
@@ -38,7 +38,6 @@ public class Ship extends AbstractCards{
 	
 	public Card copy() {
 		return new Ship(
-				image,
 				name, faction,
 				cost,
 				primary, ally, scrap

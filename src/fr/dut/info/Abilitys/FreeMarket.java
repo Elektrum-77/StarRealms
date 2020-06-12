@@ -25,7 +25,7 @@ public class FreeMarket extends AbstractAbilityTarget {
 
 	@Override
 	public Ability copy() {
-		return new ScrapMarket(nbCards);
+		return new FreeMarket(nbCards);
 	}
 
 }
